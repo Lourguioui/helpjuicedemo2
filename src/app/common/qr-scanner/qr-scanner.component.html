@@ -1,0 +1,21 @@
+<div class="container">
+    <div id="reader" class="mt-2"></div>
+
+    <div class="d-flex flex-row mt-3 align-items-center justify-content-center">
+        <nz-form-item class="flex-column">
+            <nz-form-label>
+                {{ common.translate("Select camera") }}
+            </nz-form-label>
+            <nz-form-control>
+                <nz-select class="w-100" [formControl]="selectedCameraFormControl" (ngModelChange)="initiateScanner()">
+                    <ng-container>
+                        <nz-option *ngFor="let camera of cameras"
+                                   [nzLabel]="camera.label"
+                                   [nzValue]="camera.id">
+                        </nz-option>
+                    </ng-container>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</div>

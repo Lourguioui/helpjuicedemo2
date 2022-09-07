@@ -1,0 +1,12 @@
+/**
+* Styles
+*/
+.external-page {
+	min-height: 88.3vh;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+	background-size: cover !important;
+}
+::ng-deep body {
+	background: #f0f2f5;
+}

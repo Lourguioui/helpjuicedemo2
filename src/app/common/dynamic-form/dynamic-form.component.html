@@ -1,0 +1,573 @@
+<!-- MAIN CONTENT -->
+<!-- ************************************************** -->
+<form #dynamicForm="ngForm">
+    <div nz-row [nzGutter]="15">
+        <!-- FIELDS LOOP -->
+        <ng-container *ngFor="let field of model.fields; let i = index">
+            <!-- FIELDS GROUP (ADD ONLY) -->
+            <ng-container *ngIf="field.type === 'fieldGroup'">
+                <nz-divider *ngIf="i > 0"></nz-divider>
+                <div nz-col nzSm="24" nzMd="24">
+                    <h3>
+                        {{ common.translate(field.title) }}
+                    </h3>
+                </div>
+            </ng-container>
+            <!-- FILE INPUT -->
+            <ng-container *ngIf="field.type === 'file'">
+                <div nz-col nzSm="24" nzMd="24">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                    					!item[field.name] &&
+                    					field.required
+                    					? 'error'
+                    					: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <app-file-upload [multiple]="field.multiple"
+                                             [accept]="accept"
+                                             [field]="field.name"
+                                             [(item)]="item"
+                            ></app-file-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- TEXT INPUT -->
+            <ng-container *ngIf="field.type === 'text'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+									(!text.valid && text.touched) ||
+									(field.inputType === 'email' &&
+									item[field.name] &&
+									!item[field.name].match(mailFormat))
+									? 'error'
+									: 'success'}}"
+                                         [nzErrorTip]="field.inputType === 'email'
+												?common.translate('Please enter a valid email address!')
+												:common.translate('This field is required!')">
+                            <input [required]="field.required"
+                                   nz-input
+                                   [type]="field.inputType"
+                                   class="w-100"
+                                   [(ngModel)]="item[field.name]"
+                                   ngModel
+                                   name="{{field.name}}"
+                                   #text="ngModel"
+                                   [placeholder]="common.translate(field.placeholder)"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- PHONE INPUT -->
+            <ng-container *ngIf="field.type === 'tel'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-control>
+                            <app-phone-input [label]="common.translate(field.label)"
+                                             [value]="item[field.name]"
+                                             [(ngModel)]="item[field.name]"
+                                             [required]="field.required"
+                                             [msgError]="common.translate('This phone number is invalid!')"
+                                             #tel="ngModel"
+                                             ngModel
+                                             name="{{field.name}}">
+                            </app-phone-input>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- SELECT INPUT -->
+            <ng-container *ngIf="field.type === 'select'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                            			!select.valid &&
+                            			select.touched
+                            			? 'error'
+                            			: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <nz-select [required]="field.required"
+                                       class="w-100"
+                                       nzShowSearch
+                                       nzAllowClear
+                                       [nzPlaceHolder]="common.translate(field.placeholder)"
+                                       [(ngModel)]="item[field.name]"
+                                       ngModel
+                                       name="{{field.name}}"
+                                       #select="ngModel"
+                                       [nzMode]="field.multiple ? 'multiple' : 'default'">
+                                <ng-container *ngIf="!field.loadExternal">
+                                    <nz-option *ngFor="let option of field.options"
+                                               [nzLabel]="option.label"
+                                               [nzValue]="option.value">
+                                    </nz-option>
+                                </ng-container>
+                                <ng-container *ngIf="field.loadExternal && field.name !== 'icon'">
+                                    <nz-option *ngFor="let option of options[field.name]"
+                                               [nzLabel]="option.label"
+                                               [nzValue]="option.value">
+                                    </nz-option>
+                                </ng-container>
+                                <ng-container *ngIf="field.loadExternal && field.name == 'icon'">
+                                    <nz-option *ngFor="let option of options[field.name]"
+                                               [nzLabel]="option.label"
+                                               [nzValue]="option.label"
+                                               [nzCustomContent]="true">
+                                        <mat-icon>
+                                            {{ option.label }}
+                                        </mat-icon>
+                                    </nz-option>
+                                </ng-container>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- Enum -->
+            <ng-container *ngIf="field.type === 'enum'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label [nzRequired]="field.required">
+                            {{common.translate(field.label)}}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                                          !enum.valid &&
+                                          enum.touched ?
+                                          'error' :
+                                          'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <nz-select [required]="field.required"
+                                       nzShowSearch
+                                       nzAllowClear
+                                       [nzPlaceHolder]="common.translate(field.placeholder)"
+                                       [(ngModel)]="item[field.name]"
+                                       ngModel
+                                       name="{{field.name}}"
+                                       #enum='ngModel'
+                                       [nzMode]="field.multiple ? 'multiple' : 'default'">
+                                <nz-option *ngFor="let option of field.options | keyvalue"
+                                           [nzLabel]="common.translate(option.value.toString()) | titlecase"
+                                           [nzValue]="option.value.toString()">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- Date -->
+            <ng-container *ngIf="field.type === 'date'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                    					!date.valid &&
+                    					date.touched
+                    					? 'error'
+                    					: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <nz-date-picker [nzAllowClear]="!field.required"
+                                            [required]="field.required"
+                                            class="w-100"
+                                            [(ngModel)]="item[field.name]"
+                                            ngModel
+                                            name="{{field.name}}"
+                                            #date="ngModel"
+                                            [nzFormat]="settings.dateFormat">
+                            </nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- HTML INPUT -->
+            <ng-container *ngIf="field.type === 'html'">
+                <div nz-col nzSm="24" nzMd="24">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                            			!html.valid &&
+                            			html.touched
+                            			? 'error'
+                            			: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <angular-editor [required]="field.required"
+                                            [(ngModel)]="item[field.name]"
+                                            ngModel
+                                            name="{{field.name}}"
+                                            #html="ngModel"
+                                            [placeholder]="common.translate(field.placeholder)">
+                            </angular-editor>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- TEXTAREA INPUT -->
+            <ng-container *ngIf="field.type === 'textarea'">
+                <div nz-col nzSm="24" nzMd="24">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left" [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                    					!textarea.valid &&
+                     					textarea.touched
+                     					? 'error'
+                     					: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+						<textarea [required]="field.required"
+                                  class="w-100"
+                                  nz-input
+                                  [(ngModel)]="item[field.name]"
+                                  ngModel
+                                  name="{{field.name}}"
+                                  #textarea="ngModel"
+                                  [placeholder]="common.translate(field.placeholder)"
+                                  [nzAutosize]="{ minRows: 2, maxRows: 6 }">
+                        </textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- RADIO INPUT -->
+            <ng-container *ngIf="field.type === 'radio'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="w-100">
+                        <nz-form-control nzValidateStatus="{{
+                            			!radio.valid &&
+                            			radio.touched
+                            			? 'error'
+                            			: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <nz-radio-group class="w-100"
+                                            [required]="field.required"
+                                            [(ngModel)]="item[field.name]"
+                                            ngModel
+                                            name="{{field.name}}"
+                                            #radio="ngModel">
+                                <label *ngFor="let option of options"
+                                       nz-radio
+                                       [nzValue]="option.value">
+                                    {{ common.translate(option.label) }}
+                                </label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- CHECKBOX INPUT -->
+            <ng-container *ngIf="field.type === 'checkbox'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="w-100">
+                        <nz-form-control nzValidateStatus="{{
+                            			!checkbox.valid &&
+                            			checkbox.touched
+                            			? 'error'
+                            			: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <label [required]="field.required"
+                                   nz-checkbox
+                                   [(ngModel)]="item[field.name]"
+                                   ngModel
+                                   #checkbox="ngModel"
+                                   name="{{field.name}}">
+                                {{ common.translate(field.label) }}
+                            </label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</form>
+<!-- IF SUBFIELD EXISTS -->
+<ng-container *ngIf="model.subField">
+    <!-- ROW -->
+    <div nz-row [nzGutter]="15">
+        <!-- TITLE COL -->
+        <div nz-col nzSm="24" nzMd="24">
+            <h3>
+                {{ common.translate(model.subField.titleP) }}
+            </h3>
+        </div>
+    </div>
+    <!-- ROW (SUB ITEMS LOOP) -->
+    <div *ngFor="let subItem of item[model.subField.model]"
+         nz-row
+         [nzGutter]="15">
+        <!-- DIVIDER -->
+        <div nz-col nzSm="24" nzMd="24">
+            <nz-divider></nz-divider>
+        </div>
+        <!-- REMOVE ITEM -->
+        <div nz-col nzSm="24" nzMd="24">
+            <div class="d-flex align-items-center justify-content-end">
+                <button nzDanger
+                        nz-tooltip
+                        nz-popconfirm
+                        nz-button
+                        nzPopconfirmPlacement="top"
+                        nzType="default"
+                        nzShape="circle"
+                        [nzTooltipTitle]="common.translate('Remove')"
+                        [nzPopconfirmTitle]="common.translate('Remove', ['?'])"
+                        (nzOnConfirm)="removeSubItem(subItem)">
+                    <i nz-icon
+                       nzType="close"
+                       nzTheme="outline">
+                    </i>
+                </button>
+            </div>
+        </div>
+        <!-- SUBFIELDS LOOP -->
+        <ng-container *ngFor="let field of model.subField.fields; let i = index">
+            <!-- TEXT INPUT -->
+            <ng-container *ngIf="field.type === 'text'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+											(!text.valid && text.touched) ||
+											(field.inputType === 'email' &&
+											subItem[field.name] &&
+											!subItem[field.name].match(mailFormat))
+											? 'error'
+											: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <input [required]="field.required"
+                                   nz-input
+                                   [type]="field.inputType"
+                                   class="w-100"
+                                   [(ngModel)]="subItem[field.name]"
+                                   #text="ngModel"
+                                   [placeholder]="common.translate(field.placeholder)"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- PHONE INPUT -->
+            <ng-container *ngIf="field.type === 'tel'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <app-phone-input [label]="common.translate(field.label)"
+                                             [value]="item[field.name]"
+                                             [(ngModel)]="item[field.name]"
+                                             [required]="field.required"
+                                             [msgError]="common.translate('This phone number is invalid!')"
+                                             #tel="ngModel"
+                                             ngModel
+                                             name="{{field.name}}">
+                            </app-phone-input>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- SELECT INPUT -->
+            <ng-container *ngIf="field.type === 'select'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                                			!subItem[field.name] &&
+                                			!select.valid &&
+                                			select.touched
+                                			? 'error'
+                                			: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <nz-select [required]="field.required"
+                                       class="w-100"
+                                       nzShowSearch
+                                       nzAllowClear
+                                       [nzPlaceHolder]="common.translate(field.placeholder)"
+                                       [(ngModel)]="subItem[field.name]"
+                                       #select="ngModel"
+                                       [nzMode]="field.multiple ? 'multiple' : 'default'">
+                                <ng-container *ngIf="!field.loadExternal">
+                                    <nz-option *ngFor="let option of field.options"
+                                               [nzLabel]="option.label"
+                                               [nzValue]="option.value">
+                                    </nz-option>
+                                </ng-container>
+                                <ng-container *ngIf="field.loadExternal && field.name !== 'icon'">
+                                    <nz-option *ngFor="let option of options[field.name]"
+                                               [nzLabel]="option.label"
+                                               [nzValue]="option.value">
+                                    </nz-option>
+                                </ng-container>
+                                <ng-container *ngIf="field.loadExternal && field.name == 'icon'">
+                                    <nz-option *ngFor="let option of options[field.name]"
+                                               [nzLabel]="option.label"
+                                               [nzValue]="option.label"
+                                               [nzCustomContent]="true">
+                                        <mat-icon>
+                                            {{ option.label }}
+                                        </mat-icon>
+                                    </nz-option>
+                                </ng-container>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- Date -->
+            <ng-container *ngIf="field.type === 'date'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                                			!subItem[field.name] &&
+                                			!date.valid &&
+                                			date.touched
+                                			? 'error'
+                                			: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <nz-date-picker [nzAllowClear]="!field.required"
+                                            [required]="field.required"
+                                            class="w-100"
+                                            [(ngModel)]="subItem[field.name]"
+                                            #date="ngModel">
+                            </nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- HTML INPUT -->
+            <ng-container *ngIf="field.type === 'html'">
+                <div nz-col nzSm="24" nzMd="24">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                                 			!html.valid &&
+                                 			html.touched
+                                			? 'error'
+                                 			: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <angular-editor [required]="field.required"
+                                            [(ngModel)]="subItem[field.name]"
+                                            #html="ngModel"
+                                            [placeholder]="common.translate(field.placeholder)">
+                            </angular-editor>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- TEXTAREA INPUT -->
+            <ng-container *ngIf="field.type === 'textarea'">
+                <div nz-col nzSm="24" nzMd="24">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="field.required">
+                            {{ common.translate(field.label) }}
+                        </nz-form-label>
+                        <nz-form-control nzValidateStatus="{{
+                        					!subItem[field.name] &&
+                        					field.required &&
+                        					!textarea.valid &&
+                        					textarea.touched
+                        					? 'error'
+                        					: 'success'}}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+							<textarea [required]="field.required"
+                                      class="w-100"
+                                      nz-input
+                                      [(ngModel)]="subItem[field.name]"
+                                      #textarea="ngModel"
+                                      [placeholder]="common.translate(field.placeholder)"
+                                      [nzAutosize]="{ minRows: 2, maxRows: 6 }">
+                            </textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- RADIO INPUT -->
+            <ng-container *ngIf="field.type === 'radio'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="w-100">
+                        <nz-form-control>
+                            <nz-radio-group class="w-100"
+                                            [(ngModel)]="subItem[field.name]">
+                                <label *ngFor="let option of options"
+                                       nz-radio
+                                       [nzValue]="option.value">
+                                    {{ common.translate(option.label) }}
+                                </label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+            <!-- CHECKBOX INPUT -->
+            <ng-container *ngIf="field.type === 'checkbox'">
+                <div nz-col nzSm="24" nzMd="12">
+                    <nz-form-item class="w-100">
+                        <nz-form-control>
+                            <label nz-checkbox
+                                   [(ngModel)]="subItem[field.name]">
+                                {{ common.translate(field.label) }}
+                            </label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <div nz-row [nzGutter]="15">
+        <!-- ADD SUBITEM COL -->
+        <div nz-col nzSm="24" nzMd="24">
+            <div class="d-flex w-100 align-items-center justify-content-end">
+                <button [nzSize]="'small'"
+                        nz-button
+                        nzType="primary"
+                        (click)="addSubItem()">
+                    {{ common.translate(["Add", model.subField.title]) }}
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<!-- ROW -->
+<nz-divider></nz-divider>
+<div nz-row [nzGutter]="15">
+    <!-- SUBMIT COL -->
+    <div nz-col nzSm="24" nzMd="24">
+        <div class="d-flex w-100 justify-content-end">
+            <button nz-button
+                    nzType="primary"
+                    (click)="submitForm()">
+                {{ common.translate("Submit") }}
+            </button>
+        </div>
+    </div>
+</div>

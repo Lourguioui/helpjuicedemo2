@@ -1,0 +1,14 @@
+<!-- ****************************************************** -->
+<!-- MAIN CONTENT -->
+<!-- ****************************************************** -->
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+	<nz-result
+		nzStatus="success"
+		[nzTitle]="common.translate('THANK YOU FOR USING OUR SERVICE')"
+		[nzSubTitle]="common.translate('A Confirmation Email Sent To Your Email Address')"
+	>
+		<div nz-result-extra>
+			<P> {{ common.translate("You may close this page now") }} </P>
+		</div>
+	</nz-result>
+</nz-spin>

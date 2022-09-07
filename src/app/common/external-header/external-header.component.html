@@ -1,0 +1,28 @@
+<!-- ****************************************************** -->
+<!-- EXTERNAL PAGE HEADER -->
+<!-- ****************************************************** -->
+<nz-page-header class="external-header" [nzGhost]="false">
+	<nz-page-header-title class="header-title">SUSOFT</nz-page-header-title>
+	<nz-page-header-extra>
+		<nz-select
+			class="text-upper text-gray"
+			[nzBorderless]="true"
+			[nzBackdrop]="true"
+			[ngStyle]="{ background: 'transparent' }"
+			[nzDropdownStyle]="{ width: '100px' }"
+			[(ngModel)]="common.language"
+			(ngModelChange)="common.changeLanguage($event)"
+		>
+			<nz-option
+				*ngFor="let language of languages"
+				[nzValue]="language"
+				[nzLabel]="language"
+				[nzCustomContent]="true"
+			>
+				<span class="mr-5 text-upper">{{ language }}</span>
+				<img class="mr-1" src="assets/{{ language }}.png" />
+			</nz-option>
+		</nz-select>
+		<img class="mr-1" src="assets/{{ common.language }}.png" />
+	</nz-page-header-extra>
+</nz-page-header>

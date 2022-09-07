@@ -1,0 +1,20 @@
+<!-- ****************************************************** -->
+<!-- MAIN CONTENT -->
+<!-- ****************************************************** -->
+<!-- ****************** -->
+<!-- HEADER -->
+<!-- ****************** -->
+<app-external-header></app-external-header>
+<!-- ****************** -->
+<!-- PAGE CONTENT -->
+<!-- ****************** -->
+<div
+	[ngClass]="{ 'd-flex': display === 'flex', 'd-block': display === 'block' }"
+	class="external-page w-100 align-items-center justify-content-center"
+>
+	<ng-content></ng-content>
+</div>
+<!-- ****************** -->
+<!-- FOOTER -->
+<!-- ****************** -->
+<app-footer></app-footer>

@@ -1,0 +1,34 @@
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+    <div class="d-block p-15 no-select">
+        <nz-card class="box-shadow">
+            <!-- CALENDAR WRAPPER -->
+            <div class="d-block p-15 no-select">
+                <app-calendar-toolbar
+                        [(view)]="view"
+                        [(start)]="start"
+                        [renderCalendar]="renderCalendar"
+                        [settings]="settings">
+                </app-calendar-toolbar>
+                <app-calendar-header
+                        [view]="view"
+                        [infoCells]="infoCells"
+                        [headerCells]="headerCells"
+                        [calendarSettings]="calendarSettings"
+                ></app-calendar-header>
+                <app-calendar-body
+                        [view]="view"
+                        [(start)]="start"
+                        [infoCells]="infoCells"
+                        [headerCells]="headerCells"
+                        [calendarSettings]="calendarSettings"
+                        [data]="data"
+                        [settings]="settings"
+                ></app-calendar-body>
+            </div>
+        </nz-card>
+    </div>
+</nz-spin>
+<app-calendar-settings
+        [renderCalendar]="renderCalendar"
+        [calendarSettings]="calendarSettings"
+></app-calendar-settings>

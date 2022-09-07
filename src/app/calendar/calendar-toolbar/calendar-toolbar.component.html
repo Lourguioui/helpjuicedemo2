@@ -1,0 +1,88 @@
+<!-- **************************************************************** -->
+<!-- CALENDAR TOOLBAR -->
+<!-- **************************************************************** -->
+<div class="d-flex w-100 align-items-end justify-content-between">
+    <!-- ********************* -->
+    <!-- STATUS INFO -->
+    <!-- ********************* -->
+    <div class="d-block pb-15">
+        <p class="m-0 bold font-11">{{ common.translate(["Event", "Status"]) }}</p>
+        <div class="d-flex align-items-center justify-content-start">
+            <span class="mr-5 bg-color-box pending-color"></span>
+            <label class="m-0 mr-5 font-10"> {{ common.translate("pending") }} </label>
+            <span class="mr-5 bg-color-box started-color"></span>
+            <label class="m-0 mr-5 font-10"> {{ common.translate("started") }} </label>
+        </div>
+    </div>
+    <!-- ********************* -->
+    <!-- ACTION BUTTONS -->
+    <!-- ********************* -->
+    <nz-space class="align-items-center pt-15 pb-15">
+        <!-- TOGGLE DAY VIEW -->
+        <ng-container *ngIf="view === 'month'">
+            <button *nzSpaceItem
+                    nz-button
+                    nzType="primary"
+                    (click)="toggleDayView()">
+                {{ common.translate("Toggle Day View") }}
+            </button>
+        </ng-container>
+        <!-- TOGGLE MONTH VIEW -->
+        <ng-container *ngIf="view === 'day'">
+            <button *nzSpaceItem
+                    nz-button
+                    nzType="primary"
+                    (click)="toggleMonthView()">
+                {{ common.translate("Toggle Month View") }}
+            </button>
+        </ng-container>
+        <!-- GO TO TODAY'S DATE -->
+        <button *nzSpaceItem
+                nz-button
+                nzType="primary"
+                (click)="goToToday()">
+            {{ common.translate("Today") }}
+        </button>
+        <!-- DATE PICKER -->
+        <nz-date-picker *nzSpaceItem
+                        [(ngModel)]="start"
+                        (ngModelChange)="dateOnChange($event)"
+                        [nzPlaceHolder]="common.translate('Choose a date')"
+						[nzFormat]="settings.dateFormat"
+                        [nzAllowClear]="false">
+		</nz-date-picker>
+        <!-- PREVIOUS -->
+        <button *nzSpaceItem
+                (click)="previous(7)"
+                nz-button
+                nzType="default"
+                nzShape="circle"
+                nz-tooltip
+                [nzTooltipTitle]="common.translate('Week Back')"
+        >
+            <i nz-icon nzType="left" nzTheme="outline"></i>
+        </button>
+        <!-- NEXT -->
+        <button *nzSpaceItem
+                (click)="next(7)"
+                nz-button
+                nzType="default"
+                nzShape="circle"
+                nz-tooltip
+                [nzTooltipTitle]="common.translate('Week Forward')"
+        >
+            <i nz-icon nzType="right" nzTheme="outline"></i>
+        </button>
+        <!-- CALENDAR SETTINGS -->
+        <button *nzSpaceItem
+                (click)="openCalendarSettings()"
+                nz-button
+                nzType="default"
+                nzShape="circle"
+                nz-tooltip
+                [nzTooltipTitle]="common.translate('Calendar Settings')"
+        >
+            <i nz-icon nzType="setting" nzTheme="outline"></i>
+        </button>
+    </nz-space>
+</div>

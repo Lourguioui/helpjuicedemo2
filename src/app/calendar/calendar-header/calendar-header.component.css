@@ -1,0 +1,33 @@
+/**
+* Styles
+*/
+.calendar-header {
+	height: 50px;
+	border: 1px solid lightgray;
+	background: #ececec;
+}
+.calendar-header-title {
+	padding: 5px;
+	width: 100px;
+	min-width: 100px;
+	max-width: 100px;
+	border-right: 1px solid lightgray;
+}
+.calendar-header-title label {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.calendar-header-cell {
+	padding: 5px;
+	border-right: 1px solid lightgray;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 1.2;
+}
+.calendar-header-cell:last-child {
+	border-right: none;
+}
+.week-end {
+	background: #fafafa;
+}

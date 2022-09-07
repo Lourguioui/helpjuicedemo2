@@ -1,0 +1,262 @@
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }"
+           [nzMaskClosable]="false"
+           nzTitle="Register"
+           [nzWidth]="500"
+           [nzFooter]="modalFooter"
+           [nzZIndex]="1"
+           [nzVisible]="common.modals.registrationModal"
+           (nzOnClose)="common.toggleModal('registrationModal')">
+    <div nz-row [nzGutter]="15">
+        <nz-divider></nz-divider>
+        <div nz-col nzSm="24" nzMd="24">
+            <nz-form-item class="w-100">
+                <nz-form-label class="d-block text-left"
+                               [nzRequired]="true"
+                               [nzSm]="4"
+                               [nzXs]="24">
+                    {{ common.translate("Name") }}
+                </nz-form-label>
+                <nz-form-control [nzErrorTip]="nameErrorTip"
+                                 [nzSm]="20"
+                                 [nzXs]="24">
+                    <input class="w-100"
+                           [formControl]="nameFormControl"
+                           nz-input
+                           [placeholder]="common.translate(['Enter', 'Customer', 'Name'])">
+                </nz-form-control>
+                <ng-template #nameErrorTip>
+                    <ng-container>
+                        {{ common.translate('This field is required!') }}
+                    </ng-container>
+                </ng-template>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSm="24" nzMd="24">
+            <nz-form-item class="w-100">
+                <nz-form-label class="d-block text-left"
+                               [nzRequired]="true"
+                               [nzSm]="4"
+                               [nzXs]="24">
+                    {{ common.translate(["Email"]) }}
+                </nz-form-label>
+                <nz-form-control [nzErrorTip]="emailErrorTip"
+                                 [nzSm]="20"
+                                 [nzXs]="24">
+                    <input class="w-100"
+                           [formControl]="emailFormControl"
+                           nz-input
+                           [placeholder]="common.translate(['Enter', 'Customer', 'Email'])">
+                </nz-form-control>
+                <ng-template #emailErrorTip>
+                    <ng-container>
+                        {{ common.translate('This field is required!') }}
+                    </ng-container>
+                </ng-template>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSm="24" nzMd="24">
+            <nz-form-item class="flex-column">
+                <app-phone-input [msgError]="common.translate('This phone number is invalid!')"
+                                 [label]="common.translate('Phone')"
+                                 [formControl]="phoneFormControl">
+                </app-phone-input>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="24" nzSm="24"
+             *ngIf="event.childPrice || event.studentPrice || event.adultPrice || event.seniorPrice">
+            <nz-radio-group [formControl]="ticketTypePriceFormControl">
+                <label *ngIf="event.childPrice"
+                       nz-radio
+                       [nzValue]="event.childPrice">
+                    {{common.translate('Child')}}
+                </label>
+                <label *ngIf="event.studentPrice"
+                       nz-radio
+                       [nzValue]="event.studentPrice">
+                    {{common.translate('Student')}}
+                </label>
+                <label *ngIf="event.adultPrice"
+                       nz-radio
+                       [nzValue]="event.adultPrice">
+                    {{common.translate('Adult')}}
+                </label>
+                <label *ngIf="event.seniorPrice"
+                       nz-radio
+                       [nzValue]="event.seniorPrice">
+                    {{common.translate('Senior')}}
+                </label>
+                <label nz-radio
+                       [nzValue]="event.price">
+                    {{common.translate('Regular')}}
+                </label>
+            </nz-radio-group>
+        </div>
+        <div nz-col [nzMd]="24" [nzSm]="24">
+            <p style="float: right"> Ticket
+                price: {{ticketTypePriceFormControl.value ? ticketTypePriceFormControl.value : event.price}}{{user.currency}} </p>
+        </div>
+    </div>
+    <nz-divider></nz-divider>
+    <div nz-row [nzGutter]="15">
+        <div nz-col
+             nzMd="24"
+             nzSm="24"
+             *ngFor="let formGroup of registrationFormGroups; let i = index">
+            <button nz-button
+                    nzType="text"
+                    style="float: right"
+                    (click)="removeTicket(i)">
+                <i nz-icon
+                   nzType="close"
+                   nzTheme="outline"
+                   style="color: red">
+                </i>
+            </button>
+            <form [formGroup]="registrationFormGroups[i]">
+                <div nz-row
+                     [nzGutter]="15">
+                    <div nz-col
+                         nzSm="24"
+                         nzMd="24">
+                        <nz-form-item class="w-100">
+                            <nz-form-label class="d-block text-left"
+                                           [nzRequired]="true"
+                                           [nzSm]="4"
+                                           [nzXs]="24">
+                                {{ common.translate("Name") }}
+                            </nz-form-label>
+                            <nz-form-control [nzErrorTip]="nameErrorTip"
+                                             [nzSm]="20"
+                                             [nzXs]="24">
+                                <input class="w-100"
+                                       formControlName="name"
+                                       nz-input
+                                       [placeholder]="common.translate(['Enter', 'Customer', 'Name'])">
+                            </nz-form-control>
+                            <ng-template #nameErrorTip>
+                                <ng-container>
+                                    {{ common.translate('This field is required!') }}
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSm="24" nzMd="24">
+                        <nz-form-item class="w-100">
+                            <nz-form-label class="d-block text-left pl-10"
+                                           [nzSm]="4"
+                                           [nzXs]="24">
+                                {{ common.translate(["Email"]) }}
+                            </nz-form-label>
+                            <nz-form-control [nzErrorTip]="emailErrorTip"
+                                             [nzSm]="20"
+                                             [nzXs]="24">
+                                <input class="w-100"
+                                       formControlName="email"
+                                       nz-input
+                                       [placeholder]="common.translate(['Enter', 'Customer', 'Email'])">
+                            </nz-form-control>
+                            <ng-template #emailErrorTip>
+                                <ng-container>
+                                    {{ common.translate('This field is required!') }}
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSm="24" nzMd="24">
+                        <nz-form-item class="flex-column">
+                            <app-phone-input [msgError]="common.translate('This phone number is invalid!')"
+                                             [label]="common.translate('Phone')"
+                                             [labelAlignment]="'inline'"
+                                             [formControl]="registrationFormGroups[i].get('phone')"
+                            ></app-phone-input>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="24" nzSm="24"
+                         *ngIf="event.childPrice || event.studentPrice || event.adultPrice || event.seniorPrice">
+                        <nz-radio-group formControlName="ticketTypePrice">
+                            <label *ngIf="event.childPrice"
+                                   nz-radio
+                                   [nzValue]="event.childPrice">
+                                {{common.translate('Child')}}
+                            </label>
+                            <label *ngIf="event.studentPrice"
+                                   nz-radio
+                                   [nzValue]="event.studentPrice">
+                                {{common.translate('Student')}}
+                            </label>
+                            <label *ngIf="event.adultPrice"
+                                   nz-radio
+                                   [nzValue]="event.adultPrice">
+                                {{common.translate('Adult')}}
+                            </label>
+                            <label *ngIf="event.seniorPrice"
+                                   nz-radio
+                                   [nzValue]="event.seniorPrice">
+                                {{common.translate('Senior')}}
+                            </label>
+                            <label nz-radio
+                                   [nzValue]="event.price">
+                                {{common.translate('Regular')}}
+                            </label>
+                        </nz-radio-group>
+                    </div>
+                    <div nz-col [nzMd]="24" [nzSm]="24">
+                        <p style="float: right"> Ticket
+                            price: {{registrationFormGroups[i].value.ticketTypePrice}}{{user.currency}} </p>
+                    </div>
+                </div>
+            </form>
+            <nz-divider></nz-divider>
+        </div>
+        <button nz-button
+                nzType="primary"
+                (click)="addNewTicket()"
+                nzBlock>
+            <i nz-icon
+               nzType="plus"
+               nzTheme="outline">
+            </i>
+        </button>
+    </div>
+
+    <ng-template #modalFooter>
+        <div nz-row>
+            <div nz-col [nzMd]="12">
+                <div nz-col nzMd="24" nzSm="24">
+                    {{common.translate('Available spots')}}: {{event.freeSpots}}
+                </div>
+                <div nzMd="24" nzSm="24">
+                    {{common.translate('Booked tickets')}}: {{this.bookedTickets}}
+                </div>
+            </div>
+            <div nz-col
+                 [nzMd]="12"
+                 [nzSm]="12">
+                <div style="float: right">
+                    <button nz-button
+                            nzType="primary"
+                            [nzSize]="'large'"
+                            (click)="openPaymentModal()">
+                        {{common.translate('Buy')}} for  {{getTotalPrice()}}{{user.currency}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <nz-modal [nzClosable]="true"
+              [(nzVisible)]="common.modals.paymentModal"
+              [nzTitle]="'Payment'"
+              (nzOnCancel)="common.toggleModal('paymentModal')"
+              [nzFooter]="null"
+              nzWidth="700px"
+              [nzZIndex]="20">
+        <app-payment-modal *ngIf="common.modals.paymentModal"
+                           (submit)="submit($event)"
+                           [totalPrice]="getTotalPrice()"
+                           [user]="user"
+                           [event]="event"
+                           [currency]="user.currency"
+                           [payment]="payment">
+        </app-payment-modal>
+    </nz-modal>
+</nz-drawer>

@@ -1,0 +1,51 @@
+<div *ngIf="formControl">
+    <nz-form-item>
+        <nz-form-label [nzSm]="labelAlignment === 'inline' ? 4 : 24"
+                       [nzXs]="24"
+                       [ngClass]="labelAlignment === 'inline' ? 'pl-10' : ''">
+            {{label}}
+        </nz-form-label>
+        <nz-form-control [nzErrorTip]="msgError" [nzSm]="labelAlignment === 'inline' ? 20 : 24" [nzXs]="24">
+            <ngx-intl-tel-input
+                    [required]="required"
+                    [preferredCountries]="['no']"
+                    [searchCountryFlag]="true"
+                    [selectFirstCountry]="false"
+                    [selectedCountryISO]="'no'"
+                    [separateDialCode]="true"
+                    [maxLength]="15"
+                    [inputId]="id"
+                    [formControl]='formControl'></ngx-intl-tel-input>
+        </nz-form-control>
+    </nz-form-item>
+</div>
+
+<div *ngIf="!formControl">
+    <nz-form-label [nzRequired]="required"
+                   [nzSm]="labelAlignment === 'inline' ? 4 : 24"
+                   [nzXs]="24"
+                   [ngClass]="labelAlignment === 'inline' ? 'pl-10' : ''">
+        {{ label }}
+    </nz-form-label>
+    <nz-form-control nzValidateStatus="{{
+				!tel.valid &&
+        		tel.touched
+				? 'error'
+				: 'success'}}" [nzErrorTip]="msgError"
+                     [nzSm]="labelAlignment === 'inline' ? 20 : 24"
+                     [nzXs]="24">
+        <ngx-intl-tel-input
+                [required]="required"
+                [preferredCountries]="['no']"
+                [searchCountryFlag]="true"
+                [selectFirstCountry]="false"
+                [selectedCountryISO]="'no'"
+                [separateDialCode]="true"
+                [maxLength]="15"
+                [(ngModel)]="value"
+                [inputId]="id"
+                (ngModelChange)="updateChanges($event)"
+                #tel="ngModel"
+        ></ngx-intl-tel-input>
+    </nz-form-control>
+</div>

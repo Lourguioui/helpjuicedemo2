@@ -1,0 +1,13 @@
+/**
+* Styles
+*/
+::ng-deep .ant-divider-inner-text {
+	font-size: 18px;
+	font-weight: bold;
+}
+::ng-deep .apexcharts-title-text {
+	padding: 15px;
+}
+nz-select {
+	min-width: 150px;
+}

@@ -1,0 +1,36 @@
+<nz-spin nzTip="Loading..."
+         [nzSpinning]="loading">
+    <ng-container *ngIf="!event.free">
+        <div class="d-block">
+            <h3 class="bold">
+                {{ common.translate(["Total", "Price"]) }}: {{ currency }}
+                {{ totalPrice }}
+            </h3>
+        </div>
+        <!-- CREDIT CARD -->
+        <nz-form-item *ngIf="payment.enableOnlinePayment"
+                      class="flex-column">
+            <img class="event-image"
+                 src="assets/payment.png"
+                 alt="payment methods"/>
+            <nz-form-label nzRequired>
+                {{ common.translate("Credit/Debit Card") }}
+            </nz-form-label>
+            <nz-form-control [nzErrorTip]="common.translate('This field is required!')"
+                             nzValidateStatus="{{ !creditCard ? 'error' : 'success' }}">
+                <div #cardElement id="card-element"></div>
+                <p id="card-error" role="alert"></p>
+            </nz-form-control>
+        </nz-form-item>
+        <div nz-row [nzGutter]="15">
+            <div style="float: right">
+                <button nz-button
+                        nzType="primary"
+                        [nzSize]="'large'"
+                        (click)="submitPayment()">
+                    {{common.translate('Pay')}}  {{totalPrice}}{{currency}}
+                </button>
+            </div>
+        </div>
+    </ng-container>
+</nz-spin>

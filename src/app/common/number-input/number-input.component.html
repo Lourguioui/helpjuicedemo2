@@ -1,0 +1,21 @@
+<nz-form-item class="flex-column" [ngClass]="{ 'm-0': noMargin }">
+	<nz-form-label *ngIf="label" [nzRequired]="required">
+		{{ label }}
+	</nz-form-label>
+	<nz-form-control
+		nzValidateStatus="{{ !value ? 'error' : 'success' }}"
+		[nzErrorTip]="common.translate('This field is required!')"
+	>
+		<nz-input-group>
+			<nz-input-number
+				class="w-100"
+				[nzPlaceHolder]="label || ''"
+				[(ngModel)]="value"
+				(ngModelChange)="onChange($event)"
+				[nzMin]="min"
+				[nzStep]="1"
+				[disabled]="disabled"
+			></nz-input-number>
+		</nz-input-group>
+	</nz-form-control>
+</nz-form-item>

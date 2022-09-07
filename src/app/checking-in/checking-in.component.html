@@ -1,0 +1,160 @@
+<!-- MAIN CONTENT -->
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+    <div class="d-block" [class.p-15]="!isHandset">
+        <nz-card class="box-shadow">
+            <!-- ROW -->
+            <nz-row nzGutter="15">
+                <!-- COL -->
+                <nz-col nzMd="24">
+                    <!-- TITLE -->
+                    <h1 class="m-0">
+                        <span>{{ common.translate(["Check-In", "Participants"]) }}</span>
+                    </h1>
+                    <nz-divider></nz-divider>
+                </nz-col>
+
+                <!-- QR CODE SCANNER -->
+                <app-qr-scanner (scanResult)="onQrCodeScanSuccess($event)" class="w-100"></app-qr-scanner>
+
+                <nz-divider></nz-divider>
+
+                <nz-col nzMd="24">
+                    <!-- EVENT DETAILS -->
+                    <nz-descriptions [nzColumn]="2" [nzTitle]="common.translate(['Event', 'Date/Time'])">
+                        <ng-container *ngIf="event.startDate === event.endDate; else differentDates">
+                            <nz-descriptions-item [nzTitle]="common.translate(['Start']) + '- ' + common.translate(['End'])">
+
+                            <div class="ws-nowrap">
+                                {{ event.startTime | date: settings.timeFormat }}
+                                - {{ event.endTime | date: settings.timeFormat }} &nbsp;&nbsp;
+
+                                {{ event.endDate | date: settings.dateFormat }}
+                            </div>
+                            </nz-descriptions-item>
+                        </ng-container>
+
+                        <ng-template #differentDates>
+                            <nz-descriptions-item [nzTitle]="common.translate(['Start'])">
+                                <div class="ws-nowrap">
+                                    {{ event.startTime | date: settings.timeFormat }} {{ event.startDate | date: settings.dateFormat }}
+                                </div>
+                            </nz-descriptions-item>
+
+                            <nz-descriptions-item [nzTitle]="common.translate(['End'])">
+                                <div class="ws-nowrap">
+                                    {{ event.endTime | date: settings.timeFormat }} {{ event.endDate | date: settings.dateFormat }}
+                                </div>
+                            </nz-descriptions-item>
+                        </ng-template>
+
+                    </nz-descriptions>
+                    <nz-divider></nz-divider>
+                    <nz-descriptions [nzTitle]="common.translate(['Event', 'Details'])">
+                        <nz-descriptions-item [nzTitle]="common.translate('Name')">
+                            <span class="bold">{{ event.name }}</span>
+                        </nz-descriptions-item>
+                        <nz-descriptions-item [nzTitle]="common.translate('Location')">
+                            {{ event.location?.name }}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item [nzTitle]="common.translate('Type')">
+                            {{ event.EventType?.name }}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item [nzTitle]="common.translate('Status')">
+                            {{ common.translate(event.status) }}
+                        </nz-descriptions-item>
+                        <nz-descriptions [nzColumn]="1">
+                            <nz-descriptions-item [nzTitle]="common.translate('Description')">
+                                {{ event.description }}
+                            </nz-descriptions-item>
+                        </nz-descriptions>
+                    </nz-descriptions>
+					<nz-descriptions [nzColumn]="1">
+						<nz-descriptions-item [nzTitle]="common.translate('Capacity')">
+							{{ event.numOfParticipants }}
+						</nz-descriptions-item>
+						<nz-descriptions-item [nzTitle]="common.translate('Sold Tickets')">
+							{{ event.EventParticipants.length }}
+						</nz-descriptions-item>
+						<nz-descriptions-item [nzTitle]="common.translate('Available tickets')">
+							{{ event.numOfParticipants - event.EventParticipants.length }}
+						</nz-descriptions-item>
+					</nz-descriptions>
+                    <nz-descriptions [nzColumn]="1">
+                        <nz-descriptions-item [nzTitle]="common.translate('Description')">
+                            {{ event.description }}
+                        </nz-descriptions-item>
+                    </nz-descriptions>
+                    <nz-descriptions [nzColumn]="1">
+                        <nz-descriptions-item [nzTitle]="common.translate('Notes')">
+                            {{ event.notes || "N/A" }}
+                        </nz-descriptions-item>
+                    </nz-descriptions>
+                    <nz-divider></nz-divider>
+                </nz-col>
+
+                <div class="w-100">
+                    <!-- DATATABLE -->
+                    <nz-table [nzData]="event.EventParticipants"
+                              nzShowSizeChanger
+                              [nzNoResult]="empty_template">
+                        <thead>
+                        <tr>
+                            <th>{{ common.translate("Name") }}</th>
+<!--                            <th>{{ common.translate("Email") }}</th>-->
+<!--                            <th>{{ common.translate("Age") }}</th>-->
+<!--                            <th>{{ common.translate("Phone") }}</th>-->
+                            <th>{{ common.translate("Status") }}</th>
+                            <th style="width: 100px">
+                                {{ common.translate("Actions") }}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let participant of event.EventParticipants">
+                            <!-- DATA -->
+                            <td>
+                                {{ participant.Participant.name }}
+                            </td>
+<!--                            <td>-->
+<!--                                {{ participant.Participant.email }}-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                {{ participant.Participant.age }}-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                {{ participant.Participant.phone || "N/A" }}-->
+<!--                            </td>-->
+                            <td>
+                                {{ common.translate(participant.status) }}
+                            </td>
+                            <!-- ACTIONS -->
+                            <td class="action-td">
+                                <nz-space *ngIf="participant.status === 'no-show'">
+                                    <button *nzSpaceItem
+                                            [nzTooltipTitle]="common.translate(['Check-In'])"
+                                            nzTooltipPlacement="top"
+                                            nz-tooltip
+                                            nz-button
+                                            nzType="primary"
+                                            nzShape="circle"
+                                            nz-popconfirm
+                                            nzPopconfirmPlacement="top"
+                                            [nzPopconfirmTitle]="common.translate('Check-In', ['?'])"
+                                            (nzOnConfirm)="checkInParticipant(participant.id)">
+                                        <i nz-icon nzType="check-square" nzTheme="outline"></i>
+                                    </button>
+                                </nz-space>
+                                <span *ngIf="participant.status === 'checked-in'"> N/A </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </nz-table>
+                </div>
+            </nz-row>
+        </nz-card>
+    </div>
+</nz-spin>
+<!-- EMPTY TEMPLATE -->
+<ng-template #empty_template>
+    <app-empty-placeholder></app-empty-placeholder>
+</ng-template>

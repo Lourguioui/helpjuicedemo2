@@ -1,0 +1,56 @@
+<nz-modal [nzClosable]="true"
+          [(nzVisible)]="common.modals.deleteEvent"
+          [nzTitle]="common.translate(['Delete', 'Event'])"
+          (nzOnCancel)="common.toggleModal('deleteEvent')">
+    <ng-container *nzModalContent>
+        <ng-container *ngIf="!event.repeat">
+            <p>
+                {{
+                common.translate([
+                    "Are you sure you want to delete this record ?",
+                    "All data depending on this record will also be deleted!"
+                ])
+                }}
+            </p>
+        </ng-container>
+        <ng-container *ngIf="event.repeat">
+            <h3>
+                {{ common.translate(["Repeated", "Event"]) }}
+                <i style="color: orange"
+                   class="ml-5"
+                   nz-icon
+                   nzType="exclamation-circle"
+                   nzTheme="outline"
+                ></i>
+            </h3>
+            <nz-form-item class="w-100">
+                <nz-form-control>
+                    <nz-radio-group class="w-100"
+                                    [(ngModel)]="event.deleteType">
+                        <label nz-radio
+                               nzValue="self">
+                            {{ common.translate(["Delete this event only"]) }}
+                        </label>
+                        <label nz-radio
+                               nzValue="all">
+                            {{ common.translate(["Delete this event and all repeated events"]) }}
+                        </label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+        </ng-container>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button
+                nzType="primary"
+                (click)="common.toggleModal('deleteEvent')">
+            {{ common.translate("Close") }}
+        </button>
+        <button nzDanger
+                nz-button
+                nzType="primary"
+                (click)="deleteEvent()">
+            {{ common.translate("Delete") }}
+        </button>
+    </div>
+</nz-modal>

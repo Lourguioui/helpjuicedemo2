@@ -1,0 +1,73 @@
+{
+	"CRM": {
+		"icon": "team",
+		"permissions": ["Participant"],
+		"links": [
+			{
+				"permissions": ["Participant"],
+				"route": "participants",
+				"icon": "team",
+				"title": "Participants"
+			}
+		]
+	},
+	"Events": {
+		"icon": "carry-out",
+		"permissions": ["EventType", "Event", "Organizer"],
+		"links": [
+			{
+				"permissions": ["EventType"],
+				"route": "event-types",
+				"icon": "pushpin",
+				"title": "Event Types"
+			},
+			{
+				"permissions": ["Organizer"],
+				"route": "organizers",
+				"icon": "team",
+				"title": "Event Organizers"
+			}
+		]
+	},
+	"Pricing": {
+		"icon": "dollar",
+		"links": [
+			{
+				"permissions": ["Tax"],
+				"route": "taxes",
+				"icon": "money-collect",
+				"title": "Taxes"
+			}
+		]
+	},
+	"Management": {
+		"icon": "setting",
+		"permissions": ["Payment", "Settings", "Log"],
+		"links": [
+			{
+				"permissions": ["Payment"],
+				"route": "invoices",
+				"icon": "file-done",
+				"title": "Invoices"
+			},
+			{
+				"permissions": ["Payment"],
+				"route": "payments",
+				"icon": "credit-card",
+				"title": "Payments"
+			},
+			{
+				"permissions": ["Settings"],
+				"route": "settings",
+				"icon": "setting",
+				"title": "Settings"
+			},
+			{
+				"permissions": ["Log"],
+				"route": "logs",
+				"icon": "bug",
+				"title": "Logs"
+			}
+		]
+	}
+}

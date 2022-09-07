@@ -1,0 +1,48 @@
+<!-- MANAGEMENT LAYOUT -->
+<nz-layout>
+	<!-- SIDE MENU -->
+	<nz-sider class="min-inner-height" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+		<ul nz-menu nzTheme="dark" nzMode="inline">
+			<ng-container *ngFor="let section of linkSections | keyvalue: common.originalOrder">
+				<ng-container *ngIf="common.isAccessAllowed(section.value.permissions, 'view')">
+					<li
+						class="text-upper"
+						nz-submenu
+						[nzTitle]="common.translate(section.key)"
+						[nzIcon]="section.value.icon"
+					>
+						<ul>
+							<ng-container *ngFor="let link of section.value.links">
+								<ng-container *ngIf="common.isAccessAllowed(link.permissions, 'view')">
+									<li
+										class="menu-item d-flex align-items-center justify-content-start"
+										nz-menu-item
+										[routerLink]="[link.route]"
+										routerLinkActive="active"
+										[routerLinkActiveOptions]="{ exact: true }"
+									>
+										<i nz-icon [nzType]="link.icon" nzTheme="outline"></i>
+										<span>
+											{{ common.translate(link.title) }}
+										</span>
+									</li>
+								</ng-container>
+							</ng-container>
+						</ul>
+					</li>
+				</ng-container>
+			</ng-container>
+		</ul>
+	</nz-sider>
+	<!-- LAYOUT -->
+	<nz-layout>
+		<!-- CONTENT/ROUTES -->
+		<nz-content>
+			<div class="d-block p-15">
+				<nz-card class="box-shadow">
+					<router-outlet></router-outlet>
+				</nz-card>
+			</div>
+		</nz-content>
+	</nz-layout>
+</nz-layout>

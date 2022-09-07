@@ -1,0 +1,284 @@
+<!-- FORM CONTENT -->
+<div nz-row [nzGutter]="15">
+    <div nz-col nzSm="24" nzMd="16">
+        <div nz-row [nzGutter]="15">
+            <div nz-col nzSm="24" nzMd="24">
+                <nz-form-item class="w-100">
+                    <nz-form-control [nzErrorTip]="nameErrorTip">
+                        <nz-form-label class="d-block text-left"
+                                       [nzRequired]="true">
+                            {{ common.translate("Rate name") }}
+                        </nz-form-label>
+                        <input class="w-100"
+                               [formControl]="nameFormControl"
+                               nz-input
+                               [placeholder]="common.translate(['Enter Rate Name'])">
+                    </nz-form-control>
+                    <ng-template #nameErrorTip>
+                        <ng-container>
+                            {{ common.translate('This field is required!') }}
+                        </ng-container>
+                    </ng-template>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSm="24" nzMd="24">
+                <nz-form-item class="w-100">
+                    <nz-form-control>
+                        <label nz-checkbox
+                               [formControl]="allEventsTypesFormControl"
+                               (ngModelChange)="onChangeAll($event)">
+                            {{ common.translate("All") }}
+                            <i nz-icon
+                               nzType="question-circle"
+                               nzTheme="fill"
+                               nz-tooltip
+                               aria-hidden="false"
+                               [nzTooltipTitle]="common.translate('If you select all, the rate will belong to all events and event types')"
+                               class="pointer ml-10">
+                            </i>
+                        </label>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSm="24" nzMd="24" *ngIf="!allEventsTypesFormControl.value">
+                <nz-form-item class="w-100">
+                    <nz-form-control [nzErrorTip]="eventTypesErrorTip">
+                        <nz-form-label class="d-block text-left" [nzRequired]="true">
+                            {{ common.translate("Event Types") }}
+                        </nz-form-label>
+                        <nz-select class="w-100"
+                                   nzMode="multiple"
+                                   nzShowSearch
+                                   nzAllowClear
+                                   [formControl]="eventTypesFormControl"
+                                   [nzPlaceHolder]="common.translate('Select Event Type')">
+                            <nz-option *ngFor="let eventType of eventTypes"
+                                       [nzLabel]="eventType.name"
+                                       [nzValue]="eventType.id">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                    <ng-template #eventTypesErrorTip>
+                        <ng-container>
+                            {{ common.translate('select either an event or an event type') }}
+                        </ng-container>
+                    </ng-template>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSm="24" nzMd="24" *ngIf="!allEventsTypesFormControl.value">
+                <nz-form-item class="w-100">
+                    <nz-form-control>
+                        <nz-form-label class="d-block text-left">
+                            {{ common.translate("Event") }}
+                        </nz-form-label>
+                        <nz-select class="w-100"
+                                   nzMode="multiple"
+                                   nzShowSearch
+                                   nzAllowClear
+                                   [nzPlaceHolder]="common.translate('Select Event')"
+                                   [formControl]="eventsFormControl">
+                            <nz-option *ngFor="let event of events"
+                                       [nzLabel]="event.name"
+                                       [nzValue]="event.id">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSm="24" nzMd="24">
+                <nz-form-item class="w-100">
+                    <nz-form-control [nzErrorTip]="conditionErrorTip">
+                        <nz-form-label class="d-block text-left">
+                            {{ common.translate("Apply when customer buys") }}
+                        </nz-form-label>
+                        <nz-input-number class="w-100"
+                                         [formControl]="minTicketsFormControl"
+                                         [nzPlaceHolder]="common.translate('Min number of tickets')"
+                                         [nzStep]="1"
+                                         [nzMin]="1">
+                        </nz-input-number>
+                    </nz-form-control>
+                    <ng-template #conditionErrorTip>
+                        <ng-container>
+                            {{ common.translate('This field is required!') }}
+                        </ng-container>
+                    </ng-template>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSm="24" nzMd="24">
+                <nz-form-item class="w-100">
+                    <nz-form-control>
+                        <nz-form-label class="d-block text-left">
+                            {{ common.translate("ACTION (Discount / Increase)") }}
+                            <i nz-icon
+                               nzType="question-circle"
+                               nzTheme="fill"
+                               nz-tooltip
+                               aria-hidden="false"
+                               [nzTooltipTitle]="common.translate('Use the sliders to discount or increase the rate by percentage')"
+                               class="pointer ml-10">
+                            </i>
+                        </nz-form-label>
+                        <nz-slider [nzTipFormatter]="numberFormats.percentFormatter"
+                                   [formControl]="percentageFormControl"
+                                   [nzMin]="-100"
+                                   [nzMax]="100"
+                        ></nz-slider>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSm="24" nzMd="24">
+                <nz-form-item class="w-100">
+                    <nz-form-control>
+                        <label nz-checkbox
+                               [formControl]="useIntervalFormControl">
+                            {{ common.translate("Use Interval") }}
+                            <i nz-icon
+                               nzType="question-circle"
+                               nzTheme="fill"
+                               nz-tooltip
+                               aria-hidden="false"
+                               [nzTooltipTitle]="common.translate('If checked you need to select a start and end date/time')"
+                               class="pointer ml-10">
+                            </i>
+                        </label>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div *ngIf="useIntervalFormControl.value" nz-col nzSm="24" nzMd="12">
+                <nz-form-item class="w-100">
+                    <nz-form-control>
+                        <nz-form-label class="d-block text-left">
+                            {{ common.translate("Start") }}
+                        </nz-form-label>
+                        <nz-date-picker class="w-100"
+                                        [formControl]="startDateFormControl"
+                                        [nzFormat]="settings.dateFormat">
+                        </nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div *ngIf="useIntervalFormControl.value" nz-col nzSm="24" nzMd="12">
+                <nz-form-item class="w-100">
+                    <nz-form-control>
+                        <nz-form-label class="d-block text-left">
+                            {{ common.translate("End") }}
+                        </nz-form-label>
+                        <nz-date-picker class="w-100"
+                                        [formControl]="endDateFormControl"
+                                        [nzFormat]="settings.dateFormat">
+                        </nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div *ngIf="useIntervalFormControl.value"
+                 nz-col
+                 nzSm="24"
+                 nzMd="12">
+                <app-clock-time-picker [clockFormControl]="startTimeFormControl"
+                                       [inputLabel]="common.translate(['Start', 'Time'])"
+                                       [format]="settings.clockFormat">
+                </app-clock-time-picker>
+            </div>
+            <div *ngIf="useIntervalFormControl.value"
+                 nz-col
+                 nzSm="24"
+                 nzMd="12">
+                <app-clock-time-picker [clockFormControl]="endTimeFormControl"
+                                       [inputLabel]="common.translate(['End', 'Time'])"
+                                       [format]="settings.clockFormat">
+                </app-clock-time-picker>
+            </div>
+            <div nz-col nzSm="24" nzMd="24">
+                <nz-form-item class="w-100">
+                    <nz-form-control>
+                        <label nz-checkbox
+                               [formControl]="activeFormControl">
+                            {{ common.translate("Active") }}
+                        </label>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+    <div nz-col nzSm="24" nzMd="8">
+        <div class="d-flex align-items-start justify-content-between">
+            <div class="d-block">
+                <label class="mb-0 d-flex align-items-center">
+                    {{ common.translate("Days") }}
+                    <i nz-icon
+                       nzType="question-circle"
+                       nzTheme="fill"
+                       nz-tooltip
+                       aria-hidden="false"
+                       [nzTooltipTitle]="common.translate('Select days in which this rate will apply')"
+                       class="pointer ml-10">
+                    </i>
+                </label>
+                <nz-form-item class="w-100">
+                    <nz-form-control>
+                        <label nz-checkbox
+                               [(ngModel)]="allDays"
+                               (ngModelChange)="selectAllDays($event)">
+                            {{ common.translate("Select All") }}
+                        </label>
+                    </nz-form-control>
+                </nz-form-item>
+                <ng-container *ngFor="let day of days | keyvalue: common.originalOrder">
+                    <nz-form-item class="w-100">
+                        <nz-form-control>
+                            <label nz-checkbox
+                                   [(ngModel)]="days[day.key]">
+                                {{ common.translate(day.key) }}
+                            </label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </ng-container>
+            </div>
+            <div class="d-block">
+                <label class="mb-0 d-flex align-items-center">
+                    {{ common.translate("Months") }}
+                    <i nz-icon
+                       nzType="question-circle"
+                       nzTheme="fill"
+                       nz-tooltip
+                       aria-hidden="false"
+                       [nzTooltipTitle]="common.translate('Select months in which this rate will apply')"
+                       class="pointer ml-10">
+                    </i>
+                </label>
+                <nz-form-item class="w-100">
+                    <nz-form-control>
+                        <label nz-checkbox
+                               [(ngModel)]="allMonths"
+                               (ngModelChange)="selectAllMonths($event)">
+                            {{ common.translate("Select All") }}
+                        </label>
+                    </nz-form-control>
+                </nz-form-item>
+                <ng-container *ngFor="let month of months | keyvalue: common.originalOrder">
+                    <nz-form-item class="w-100">
+                        <nz-form-control>
+                            <label nz-checkbox
+                                   [(ngModel)]="months[month.key]">
+                                {{ common.translate(month.key) }}
+                            </label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<div nz-row [nzGutter]="15">
+    <!-- SUBMIT -->
+    <div nz-col nzSm="24" nzMd="24">
+        <div class="d-flex w-100 justify-content-end">
+            <button nz-button
+                    nzType="primary"
+                    (click)="submitForm()">
+                {{ common.translate("Submit") }}
+            </button>
+        </div>
+    </div>
+</div>

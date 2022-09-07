@@ -1,0 +1,6 @@
+/**
+* Styles
+*/
+::ng-deep .external-page {
+	background: url(/assets/external-page-bg.jpg);
+}

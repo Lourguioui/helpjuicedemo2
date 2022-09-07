@@ -1,0 +1,12 @@
+/**
+* Styles
+*/
+.external-header {
+	background: #0d3c67 !important;
+}
+.header-title {
+	color: rgba(255, 255, 255, 0.65);
+}
+::ng-deep .external-header .anticon-down {
+	color: rgba(255, 255, 255, 0.65) !important;
+}

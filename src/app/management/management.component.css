@@ -1,0 +1,11 @@
+/**
+* Styles
+*/
+.menu-item {
+	padding-left: 25px !important;
+}
+::ng-deep .ant-layout-sider {
+	min-width: 300px !important;
+	max-width: 300px !important;
+	width: 300px !important;
+}

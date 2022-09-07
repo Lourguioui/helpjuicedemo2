@@ -1,0 +1,23 @@
+<!-- ************************************************** -->
+<!-- MAIN APP CONTENT -->
+<!-- ************************************************** -->
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+	<ng-container *ngIf="!loading">
+		<!-- ******************* -->
+		<!-- HEADER -->
+		<!-- ******************* -->
+		<app-header></app-header>
+		<!-- ******************* -->
+		<!-- ROUTES -->
+		<!-- ******************* -->
+		<nz-layout class="min-inner-height">
+			<nz-content>
+				<router-outlet></router-outlet>
+			</nz-content>
+		</nz-layout>
+		<!-- ******************* -->
+		<!-- FOOTER -->
+		<!-- ******************* -->
+		<app-footer></app-footer>
+	</ng-container>
+</nz-spin>

@@ -1,0 +1,341 @@
+<nz-spin nzTip="Loading..."
+         [nzSpinning]="loading">
+    <nz-row nzGutter="15"
+            [formGroup]="eventDetailsFormGroup">
+        <!-- NAME -->
+        <nz-col nzMd="6" nzSm="12" nzXs="24">
+            <nz-form-item class="flex-column">
+                <nz-form-label nzRequired>
+                    {{ common.translate(["Event", "Name"]) }}
+                </nz-form-label>
+                <nz-form-control nzHasFeedback
+                                 [nzErrorTip]="nameErrorTip">
+                    <nz-input-group>
+                        <input type="text"
+                               nz-input [formControl]="nameFormControl"
+                               [placeholder]="common.translate(['Event', 'Name'])"/>
+                    </nz-input-group>
+                    <ng-template #nameErrorTip>
+                        <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-col>
+        <!-- LOCATION -->
+        <nz-col nzMd="6" nzSm="12" nzXs="24">
+            <nz-form-item class="flex-column">
+                <nz-form-label nzRequired>
+                    {{ common.translate(["Event", "Location"]) }}
+                </nz-form-label>
+                <nz-form-control nzHasFeedback
+                                 [nzErrorTip]="locationErrorTip">
+                    <nz-input-group>
+                        <input nz-input
+                               [formControl]="locationFormControl"
+                               ngx-google-places-autocomplete
+                               (onAddressChange)="locationOnChange($event)"
+                               [placeholder]="common.translate(['Event', 'Location'])"/>
+                    </nz-input-group>
+                    <ng-template #locationErrorTip>
+                        <ng-container>{{ common.translate('Please choose a location from the options offered') }}</ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-col>
+        <!-- TYPE -->
+        <nz-col nzMd="6" nzSm="12" nzXs="24">
+            <nz-form-item class="flex-column">
+                <nz-form-label nzRequired>
+                    {{ common.translate(["Event", "Type"]) }}
+                </nz-form-label>
+                <nz-form-control nzHasFeedback
+                                 [nzErrorTip]="typeErrorTip">
+                    <nz-select nzShowSearch
+                               nzAllowClear
+                               [nzPlaceHolder]="common.translate(['Select', 'Type'])"
+                               [formControl]="typeIdFormControl">
+                        <nz-option *ngFor="let type of EventTypes"
+                                   [nzLabel]="type.name"
+                                   [nzValue]="type.id">
+                        </nz-option>
+                    </nz-select>
+                    <ng-template #typeErrorTip>
+                        <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-col>
+        <!-- STATUS -->
+        <nz-col nzMd="6" nzSm="12" nzXs="24">
+            <nz-form-item class="flex-column">
+                <nz-form-label nzRequired>
+                    {{ common.translate(["Event", "Status"]) }}
+                </nz-form-label>
+                <nz-form-control nzHasFeedback
+                                 [nzErrorTip]="statusErrorTip">
+                    <nz-select nzShowSearch
+                               nzAllowClear
+                               [nzPlaceHolder]="common.translate('Select Status')"
+                               [formControl]="statusFormControl">
+                        <nz-option *ngFor="let status of eventStatus | keyvalue"
+                                   [nzLabel]="common.translate(status.value.toString()) | titlecase"
+                                   [nzValue]="status.value.toString()"></nz-option>
+                    </nz-select>
+                    <ng-template #statusErrorTip>
+                        <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-col>
+        <!-- NUMBER OF PARTICIPANTS -->
+        <nz-col nzMd="6" nzSm="12" nzXs="24">
+            <nz-form-item class="flex-column">
+                <nz-form-label nzRequired>
+                    {{ common.translate("Max number of participants") }}
+                </nz-form-label>
+                <nz-form-control nzHasFeedback
+                                 [nzErrorTip]="maxParticipantsErrorTip">
+                    <nz-input-group>
+                        <nz-input-number class="w-100"
+                                         [nzPlaceHolder]="common.translate('Max number of participants')"
+                                         [formControl]="maxParticipantsFormControl"
+                                         [nzStep]="1"
+                                         [nzMin]="0">
+                        </nz-input-number>
+                    </nz-input-group>
+                    <ng-template #maxParticipantsErrorTip>
+                        <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-col>
+        <div nz-col
+             [nzSpan]="24">
+            <div nz-row
+                 [nzGutter]="15">
+                <div nz-col
+                     class="gutter-row"
+                     [nzSpan]="12">
+                    <nz-form-item class="flex-column">
+                        <nz-form-label [nzRequired]="!freeFormControl.value">
+                            {{ common.translate("Price") | titlecase }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback
+                                         [nzErrorTip]="priceErrorTip">
+                            <nz-input-group>
+                                <nz-input-number [nzPlaceHolder]="common.translate( 'Price') | titlecase"
+                                                 class="w-100"
+                                                 [formControl]="priceFormControl"
+                                                 [nzStep]="1"
+                                                 [nzMin]="0">
+                                </nz-input-number>
+                            </nz-input-group>
+                            <ng-template #priceErrorTip>
+                                <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col
+                     class="gutter-row"
+                     [nzSpan]="12">
+                    <nz-form-item class="flex-column w-50">
+                        <nz-form-label>
+                            {{ common.translate("Free") }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <label nz-checkbox
+                                   [formControl]="freeFormControl"
+                                   (ngModelChange)="onChangeFree($event)">
+                                {{ common.translate("Free") }}
+                            </label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </div>
+        <!-- Child price -->
+        <nz-col nzMd="24" nzSm="24">
+            <nz-row>
+                <nz-col nzMd="24" nzSm="24">
+                    <nz-form-item class="flex-column">
+                        <nz-form-control>
+                            <label nz-checkbox
+                                   [formControl]="samePriceForChildFormControl">
+                                {{ common.translate("Same price for child") }}
+                            </label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col nzSm="24" nzMd="12" *ngIf="!samePriceForChildFormControl.value">
+                    <nz-form-item class="flex-column w-100">
+                        <nz-form-control nzHasFeedback
+                                         [nzErrorTip]="childPriceErrorTip">
+                            <nz-input-group>
+                                <nz-input-number [nzPlaceHolder]="common.translate(['Child', 'Price'])"
+                                                 class="w-100"
+                                                 [formControl]="childPriceFormControl"
+                                                 [nzStep]="1"
+                                                 [nzMin]="0">
+                                </nz-input-number>
+                            </nz-input-group>
+                            <ng-template #childPriceErrorTip>
+                                <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+            </nz-row>
+        </nz-col>
+        <!-- Student Price -->
+        <nz-col nzMd="24" nzSm="24">
+            <nz-row>
+                <nz-col nzMd="24" nzSm="24">
+                    <nz-form-item class="flex-column">
+                        <nz-form-control>
+                            <label nz-checkbox
+                                   [formControl]="samePriceForStudentFormControl">
+                                {{ common.translate("Same price for student") }}
+                            </label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col nzMd="12" nzSm="24" *ngIf="!samePriceForStudentFormControl.value">
+                    <nz-form-item class="flex-column">
+                        <nz-form-control nzHasFeedback
+                                         [nzErrorTip]="studentPriceErrorTip">
+                            <nz-input-group>
+                                <nz-input-number [nzPlaceHolder]="common.translate(['Student', 'Price'])"
+                                                 class="w-100"
+                                                 [formControl]="studentPriceFormControl"
+                                                 [nzStep]="1"
+                                                 [nzMin]="0">
+                                </nz-input-number>
+                            </nz-input-group>
+                            <ng-template #studentPriceErrorTip>
+                                <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+            </nz-row>
+        </nz-col>
+        <!-- Adult price -->
+        <nz-col nzMd="24" nzSm="24">
+            <nz-row>
+                <nz-col nzMd="24" nzSm="24">
+                    <nz-form-item class="flex-column">
+                        <nz-form-control>
+                            <label nz-checkbox
+                                   [formControl]="samePriceForAdultFormControl">
+                                {{ common.translate("Same price for adult") }}
+                            </label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col nzMd="12" nzSm="24" *ngIf="!samePriceForAdultFormControl.value">
+                    <nz-form-item class="flex-column">
+                        <nz-form-control nzHasFeedback
+                                         [nzErrorTip]="adultPriceErrorTip">
+                            <nz-input-group>
+                                <nz-input-number [nzPlaceHolder]="common.translate(['Adult', 'Price'])"
+                                                 class="w-100"
+                                                 [formControl]="adultPriceFormControl"
+                                                 [nzStep]="1"
+                                                 [nzMin]="0">
+                                </nz-input-number>
+                            </nz-input-group>
+                            <ng-template #adultPriceErrorTip>
+                                <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+            </nz-row>
+        </nz-col>
+        <!-- Senior price -->
+        <nz-col nzMd="24" nzSm="24">
+            <nz-row>
+                <nz-col nzMd="24" nzSm="24">
+                    <nz-form-item class="flex-column">
+                        <nz-form-control>
+                            <label nz-checkbox
+                                   [formControl]="samePriceForSeniorFormControl">
+                                {{ common.translate("Same price for senior") }}
+                            </label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col nzMd="12" nzSm="24" *ngIf="!samePriceForSeniorFormControl.value">
+                    <nz-form-item class="flex-column">
+                        <nz-form-control nzHasFeedback
+                                         [nzErrorTip]="seniorPriceErrorTip">
+                            <nz-input-group>
+                                <nz-input-number [nzPlaceHolder]="common.translate(['Senior', 'Price'])"
+                                                 class="w-100"
+                                                 [formControl]="seniorPriceFormControl"
+                                                 [nzStep]="1"
+                                                 [nzMin]="0">
+                                </nz-input-number>
+                            </nz-input-group>
+                            <ng-template #seniorPriceErrorTip>
+                                <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+            </nz-row>
+        </nz-col>
+        <!-- DESCRIPTION -->
+        <nz-col nzMd="12" nzXs="24">
+            <nz-form-item class="flex-column">
+                <nz-form-label nzRequired>
+                    {{ common.translate("Description") }}
+                </nz-form-label>
+                <nz-form-control nzHasFeedback
+                                 [nzErrorTip]="descriptionErrorTip">
+					<textarea class="w-100"
+                              nz-input
+                              [formControl]="descriptionFormControl"
+                              [placeholder]="common.translate('Description')"
+                              [nzAutosize]="{ minRows: 2, maxRows: 6 }">
+					</textarea>
+                    <ng-template #descriptionErrorTip>
+                        <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-col>
+        <!-- NOTES -->
+        <nz-col nzMd="12" nzXs="24">
+            <nz-form-item class="flex-column">
+                <nz-form-label>
+                    {{ common.translate("Notes") }}
+                </nz-form-label>
+                <nz-form-control>
+					<textarea class="w-100"
+                              nz-input
+                              [formControl]="notesFormControl"
+                              [placeholder]="common.translate('Notes')"
+                              [nzAutosize]="{ minRows: 2, maxRows: 6 }">
+					</textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-col>
+        <!-- GALLERY -->
+        <nz-col nzMd="24" nzXs="24">
+            <nz-form-item class="flex-column">
+                <nz-form-label>
+                    {{ common.translate(["Event", "Images"]) }}
+                </nz-form-label>
+                <nz-form-control>
+                    <app-file-upload [multiple]="true"
+                                     [accept]="'image/*'"
+                                     [field]="'EventImages'"
+                                     [(item)]="event">
+                    </app-file-upload>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-col>
+    </nz-row>
+</nz-spin>

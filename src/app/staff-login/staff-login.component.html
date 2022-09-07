@@ -1,0 +1,50 @@
+<app-external-page>
+    <nz-card class="box-shadow">
+        <nz-spin nzTip="Loading..." [nzSpinning]="loading">
+            <h1 class="text-black text-center">{{ common.translate("Staff Login") }}</h1>
+            <form nz-form nzLayout="vertical" [formGroup]="formGroup" class="login-form"  (ngSubmit)="submit()">
+                <nz-form-item>
+                    <nz-form-label nzRequired>
+                        {{ common.translate("Email") }}
+                    </nz-form-label>
+                    <nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+                        <nz-input-group nzPrefixIcon="mail">
+                            <input type="text"
+                                   nz-input
+                                   formControlName="email"
+                                   [placeholder]="common.translate('Email')"
+                            />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzRequired>
+                        {{ common.translate("Password") }}
+                    </nz-form-label>
+                    <nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+                        <nz-input-group nzPrefixIcon="lock">
+                            <input type="password"
+                                   nz-input
+                                   formControlName="password"
+                                   [placeholder]="common.translate('Type your password')"
+                            />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <div class="text-center pt-15">
+                    <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">
+                        {{ common.translate("Login") }}
+                    </button>
+                </div>
+                <div class="d-block p-15">
+                    <div class="text-center mt-15">
+                        <span class="text-black"> {{ common.translate("Susoft") }} </span>
+                        <a [routerLink]="['/support-center']">
+                            {{ common.translate("Support Center") }}
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </nz-spin>
+    </nz-card>
+</app-external-page>

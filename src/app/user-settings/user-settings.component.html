@@ -1,0 +1,118 @@
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+	<nz-tabset>
+
+		<!-- General Settings Tab-->
+		<nz-tab [nzTitle]="common.translate('General')">
+			<app-dynamic-form
+				[hideTitle]="true"
+				[item]="settings"
+				[model]="generalSettings"
+				[submit]="saveSettings"
+				[settings]="settings"
+			></app-dynamic-form>
+		</nz-tab>
+
+		<!-- Email Template Tab -->
+		<nz-tab [nzTitle]="common.translate('Email Template')">
+			<app-dynamic-form
+				[hideTitle]="true"
+				[item]="emailSettings"
+				[model]="emailTemplate"
+				[submit]="saveEmailSettings"
+				[settings]="settings"
+			></app-dynamic-form>
+		</nz-tab>
+
+
+		<!-- Age Settings Tab -->
+		<nz-tab [nzTitle]="common.translate(['Age', 'Settings'])">
+			<div class="d-block mb-15">
+				<nz-space class="align-items-center">
+					<h4 class="m-0 bold" *nzSpaceItem>{{ common.translate(["Child", "Age"]) }}:</h4>
+					<app-number-input
+						*nzSpaceItem
+						[noMargin]="true"
+						[(ngModel)]="ageSettings.childAge"
+					></app-number-input>
+					<span *nzSpaceItem> {{ common.translate("and") }} {{ common.translate("below") }}. </span>
+				</nz-space>
+			</div>
+			<div class="d-block mb-15">
+				<nz-space class="align-items-center">
+					<h4 class="m-0 bold" *nzSpaceItem>{{ common.translate(["Adult", "Age"]) }}:</h4>
+					<span *nzSpaceItem> {{ common.translate("From") }} </span>
+					<span *nzSpaceItem> {{ ageSettings.childAge }}</span>
+					<span *nzSpaceItem> {{ common.translate("to") }}</span>
+					<app-number-input
+						[required]="true"
+						[noMargin]="true"
+						*nzSpaceItem
+						[(ngModel)]="ageSettings.adultAge"
+					></app-number-input>
+				</nz-space>
+			</div>
+			<div class="d-block mb-15">
+				<nz-space class="align-items-center">
+					<h4 class="m-0 bold" *nzSpaceItem>{{ common.translate(["Old Person", "Age"]) }}:</h4>
+					<app-number-input
+						[required]="true"
+						[noMargin]="true"
+						*nzSpaceItem
+						[(ngModel)]="ageSettings.oldAge"
+					></app-number-input>
+					<span *nzSpaceItem> {{ common.translate("and") }} </span>
+					<span *nzSpaceItem> {{ common.translate("above") }}.</span>
+				</nz-space>
+			</div>
+			<nz-divider></nz-divider>
+			<div class="w-100 d-flex align-items-center justify-content-end">
+				<button nz-button nzType="primary" (click)="saveAgeSettings()">
+					{{ common.translate("Submit") }}
+				</button>
+			</div>
+		</nz-tab>
+
+		<!-- Event Sign Up Widget -->
+		<nz-tab [nzTitle]="common.translate('Online Register')">
+			<h3>
+				{{ common.translate("You can use the link below to access your online event register page") }}
+			</h3>
+			<a target="_blank" href="/user-events/{{ settings.uuid }}">
+				{{ common.translate("Event Register Page") }}
+			</a>
+			<nz-divider></nz-divider>
+			<h3>
+				{{
+					common.translate(
+						"You can also copy this link and use it for integration in other websites/systems"
+					)
+				}}
+			</h3>
+			<span nz-typography nzCopyable nzCopyText="{{ siteUrl }}//user-events/{{ settings.uuid }}">
+				<code> {{ siteUrl }}//user-events/{{ settings.uuid }} </code>
+			</span>
+			<nz-divider></nz-divider>
+			<h3>
+				{{
+					common.translate(
+						"Or you can use the code below to embed the register widget anywhere you want"
+					)
+				}}.
+			</h3>
+			<span
+				nz-typography
+				nzCopyable
+				nzCopyText="<iframe src='/user-events/{{ settings.uuid }}'></iframe>"
+			>
+				<code> {{ onlineRegisterWidget }} </code>
+			</span>
+			<nz-divider></nz-divider>
+			<h4>{{ common.translate("It should look like this anywhere you place it") }}.</h4>
+			<iframe class="review" [src]="iframeLink"></iframe>
+		</nz-tab>
+		<!-- Payment Settings Tab -->
+		<nz-tab [nzTitle]="common.translate('Online Payment')">
+			<app-stripe-payment></app-stripe-payment>
+		</nz-tab>
+	</nz-tabset>
+</nz-spin>

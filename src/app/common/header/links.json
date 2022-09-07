@@ -1,0 +1,30 @@
+[
+	{
+		"model": "Dashboard",
+		"permission": "view",
+		"route": "/",
+		"icon": "dashboard",
+		"title": "Dashboard"
+	},
+	{
+		"model": "Calendar",
+		"permission": "view",
+		"route": "/calendar",
+		"icon": "calendar",
+		"title": "Calendar"
+	},
+	{
+		"model": "Event",
+		"permission": "create",
+		"route": "/new-event",
+		"icon": "carry-out",
+		"title": "New Event"
+	},
+	{
+		"model": "Event",
+		"permission": "view",
+		"route": "/all-events",
+		"icon": "carry-out",
+		"title": "All Events"
+	}
+]

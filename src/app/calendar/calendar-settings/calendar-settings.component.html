@@ -1,0 +1,29 @@
+<!-- **************************************************************** -->
+<!-- CALENDAR SETTINGS -->
+<!-- **************************************************************** -->
+<nz-modal
+	[nzClosable]="true"
+	(nzOnCancel)="common.toggleModal('calendarSettings')"
+	[(nzVisible)]="common.modals.calendarSettings"
+	[nzTitle]="common.translate('Calendar Settings')"
+>
+	<ng-container *nzModalContent>
+		<div class="d-block">
+			<label>
+				{{ common.translate("Max Number Of Columns") }}
+			</label>
+			<nz-slider
+				(ngModelChange)="columnsOnChange($event)"
+				[(ngModel)]="calendarSettings.columns"
+				[nzMin]="calendarSettings.minColumns"
+				[nzMax]="calendarSettings.maxColumns"
+				[nzTipFormatter]="sliderColumnFormatter"
+			></nz-slider>
+		</div>
+	</ng-container>
+	<div *nzModalFooter>
+		<button nz-button nzType="primary" (click)="common.toggleModal('calendarSettings')">
+			{{ common.translate("Close") }}
+		</button>
+	</div>
+</nz-modal>

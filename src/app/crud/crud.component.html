@@ -1,0 +1,159 @@
+<!-- TITLE -->
+<div class="d-flex align-items-center justify-content-between">
+    <h1 class="m-0">
+        {{ common.translate(model.titleP) }}
+    </h1>
+    <div class="d-flex align-items-center justify-content-end">
+        <nz-space>
+            <ng-container *ngIf="!model.disableCreate">
+                <button *nzSpaceItem
+                        nz-button
+                        nzType="primary"
+                        (click)="add()">
+                    {{ common.translate("Add New") }}
+                </button>
+            </ng-container>
+            <div *nzSpaceItem class="d-block">
+                <nz-input-group [nzSuffix]="suffixIconSearch">
+                    <input type="text"
+                           [(ngModel)]="filters.generic.searchValue"
+                           (ngModelChange)="searchOnChange($event)"
+                           nz-input
+                           [placeholder]="common.translate('Search')"/>
+                </nz-input-group>
+                <ng-template #suffixIconSearch>
+                    <i nz-icon nzType="search"></i>
+                </ng-template>
+            </div>
+        </nz-space>
+    </div>
+</div>
+<!-- DIVIDER -->
+<nz-divider></nz-divider>
+<!-- DATATABLE -->
+<nz-table nzShowSizeChanger
+          [nzData]="data"
+          [nzFrontPagination]="false"
+          [nzLoading]="loading"
+          [nzTotal]="paging.total"
+          [nzPageSize]="paging.limit"
+          [nzPageIndex]="paging.pageIndex"
+          [nzNoResult]="empty_template"
+          (nzQueryParams)="onTableQueryParamsChange($event)">
+    <thead>
+    <tr>
+        <ng-container *ngFor="let field of model.fields">
+            <th *ngIf="field.inTable">{{ common.translate(field.label) }}</th>
+        </ng-container>
+        <th style="width: 100px">
+            {{ common.translate("Actions") }}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of data">
+        <!-- DATA -->
+        <ng-container *ngFor="let field of model.fields">
+            <td *ngIf="field.inTable && field.type != 'date' && !field.format">
+                {{ displayData(field.tableName, item) || common.translate("N/A") }}
+            </td>
+            <td *ngIf="field.inTable && field.type == 'date' && !field.format">
+                {{ displayData(field.tableName, item) | date: "fullDate" }}
+            </td>
+            <td *ngIf="field.inTable && field.format === 'currency'">
+                {{ common.user().currency }}
+                {{ displayData(field.tableName, item) | number: "1.2-2" }}
+            </td>
+        </ng-container>
+        <!-- ACTIONS -->
+        <td class="action-td">
+            <nz-space>
+                <ng-container *ngIf="!model.disableEdit">
+                    <button *nzSpaceItem
+                            [nzTooltipTitle]="common.translate('Edit')"
+                            nzTooltipPlacement="top"
+                            nz-tooltip
+                            nz-button
+                            nzType="primary"
+                            nzShape="circle"
+                            (click)="edit(item.id)"
+                    >
+                        <i nz-icon nzType="edit"></i>
+                    </button>
+                </ng-container>
+
+                <ng-container *ngIf="!model.disableDelete">
+                    <button *nzSpaceItem
+                            [nzTooltipTitle]="common.translate('Delete')"
+                            nzTooltipPlacement="top"
+                            nz-tooltip
+                            nz-button
+                            nzType="primary"
+                            nzDanger
+                            nzShape="circle"
+                            nz-popconfirm
+                            nzPopconfirmPlacement="top"
+                            [nzPopconfirmTitle]="
+								common.translate([
+									'Are you sure you want to delete this record ?',
+									'All data depending on this record will also be deleted!'
+								])
+							"
+                            (nzOnConfirm)="confirmDelete(item.id)"
+                    >
+                        <i nz-icon nzType="delete" nzTheme="outline"></i>
+                    </button>
+                </ng-container>
+
+                <ng-container *ngIf="model.disableDelete && model.disableEdit">
+						<span *nzSpaceItem>
+							{{ common.translate("N/A") }}
+						</span>
+                </ng-container>
+            </nz-space>
+        </td>
+    </tr>
+    </tbody>
+</nz-table>
+<!-- EMPTY TEMPLATE -->
+<ng-template #empty_template>
+    <app-empty-placeholder></app-empty-placeholder>
+</ng-template>
+<!-- ADD/EDIT MODAL -->
+<nz-modal nzClassName="modal"
+          [nzClosable]="true"
+          [(nzVisible)]="common.modals.addEditModal"
+          [nzTitle]="common.translate(model.title)"
+          (nzOnCancel)="common.toggleModal('addEditModal')"
+          [nzFooter]="null"
+          nzCentered
+          nzWidth="700px"
+          nzZIndex="1">
+    <ng-container *nzModalContent>
+        <app-dynamic-form *ngIf="model.generic"
+                          [item]="item"
+                          [model]="model"
+                          [submit]="submit"
+                          [settings]="settings">
+        </app-dynamic-form>
+        <app-rate-management-form *ngIf="model.name === 'RateManagement'"
+                                  [item]="item"
+                                  [model]="model"
+                                  [submit]="submit"
+        ></app-rate-management-form>
+        <app-staff-group-form *ngIf="model.name === 'StaffGroup'"
+                              [item]="item"
+                              [model]="model"
+                              [submit]="submit">
+        </app-staff-group-form>
+    </ng-container>
+</nz-modal>
+<!-- DETAILS MODAL -->
+<nz-modal [nzClosable]="true"
+          [(nzVisible)]="common.modals.detailsModal"
+          [nzTitle]="common.translate(model.title)"
+          (nzOnCancel)="common.toggleModal('detailsModal')"
+          [nzFooter]="null"
+          nzWidth="1100px">
+    <ng-container *nzModalContent></ng-container>
+</nz-modal>

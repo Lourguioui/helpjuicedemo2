@@ -1,0 +1,126 @@
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+    <div class="d-block p-15">
+        <nz-card class="box-shadow">
+            <!-- TITLE -->
+            <h1 class="m-0">
+                {{ common.translate(["Edit", "Event"]) }}
+            </h1>
+            <nz-divider></nz-divider>
+            <!-- ROW -->
+            <ng-container *ngIf="!loading">
+                <nz-row nzGutter="70">
+                    <!-- COL -->
+                    <nz-col nzMd="24">
+                        <!-- ROW -->
+                        <nz-row nzGutter="15">
+                            <!-- COL (TITLE) -->
+                            <nz-col nzMd="24" nzSm="24" nzXs="24">
+                                <h3 class="bold">
+                                    {{ common.translate(["Event", "Date/Time"]) }}
+                                </h3>
+                            </nz-col>
+                        </nz-row>
+                        <!-- CONTENT -->
+                        <app-event-dates [event]="event" [settings]="settings"></app-event-dates>
+                        <!-- DIVIDER -->
+                        <nz-divider></nz-divider>
+                        <!-- ROW -->
+                        <nz-row nzGutter="15">
+                            <!-- COL (TITLE) -->
+                            <nz-col nzMd="24" nzSm="24" nzXs="24">
+                                <h3 class="bold">
+                                    {{ common.translate(["Event", "Details"]) }}
+                                </h3>
+                            </nz-col>
+                        </nz-row>
+                        <!-- CONTENT -->
+                        <app-event-details [event]="event"></app-event-details>
+                    </nz-col>
+                    <!-- COL -->
+                    <nz-col nzMd="24">
+                        <nz-divider></nz-divider>
+                        <!-- ROW -->
+                        <nz-row nzGutter="15">
+                            <!-- COL (TITLE) -->
+                            <nz-col nzMd="24" nzSm="24" nzXs="24">
+                                <h3 class="bold">
+                                    {{ common.translate(["Event", "Organizers"]) }}
+                                </h3>
+                            </nz-col>
+                        </nz-row>
+                        <!-- CONTENT -->
+                        <app-event-organizers [event]="event"></app-event-organizers>
+                        <!-- DIVIDER -->
+                        <nz-divider></nz-divider>
+                        <!-- ROW -->
+                        <nz-row nzGutter="15">
+                            <!-- COL (TITLE) -->
+                            <nz-col nzMd="24" nzSm="24" nzXs="24">
+                                <h3 class="bold">
+                                    {{ common.translate(["Event", "Participants"]) }}
+                                </h3>
+                            </nz-col>
+                        </nz-row>
+                        <!-- CONTENT -->
+                        <app-event-participants [event]="event"></app-event-participants>
+                    </nz-col>
+
+                    <!-- COL -->
+                    <nz-col nzMd="24" nzSm="24" nzXs="24">
+                        <nz-divider></nz-divider>
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button nz-button nzType="primary" (click)="submitClicked()">
+                                {{ common.translate("Submit") }}
+                            </button>
+                        </div>
+                    </nz-col>
+                </nz-row>
+            </ng-container>
+        </nz-card>
+    </div>
+</nz-spin>
+
+
+<!-- EDIT EVENT MODAL -->
+
+<nz-modal
+        [nzClosable]="true"
+        [(nzVisible)]="common.modals.editEvent"
+        [nzTitle]="common.translate(['Edit', 'Event'])"
+        (nzOnCancel)="common.toggleModal('editEvent')"
+>
+    <ng-container *nzModalContent>
+        <ng-container>
+            <h3>
+                {{ common.translate(["Repeated", "Event"]) }}
+                <i
+                        style="color: orange"
+                        class="ml-5"
+                        nz-icon
+                        nzType="exclamation-circle"
+                        nzTheme="outline"
+                ></i>
+            </h3>
+            <nz-form-item class="w-100">
+                <nz-form-control>
+                    <nz-radio-group class="w-100" [(ngModel)]="event.updateType">
+                        <label nz-radio nzValue="self">
+                            {{ common.translate(["Edit this event only"]) }}
+                        </label>
+                        <label nz-radio nzValue="all">
+                            {{ common.translate(["Edit this event and all repeated events"]) }}
+                        </label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+        </ng-container>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button nzType="primary" (click)="common.toggleModal('editEvent')">
+            {{ common.translate("Cancel") }}
+        </button>
+        <button nzDanger nz-button nzType="primary" (click)="submit()">
+            {{ common.translate("Submit") }}
+        </button>
+    </div>
+</nz-modal>

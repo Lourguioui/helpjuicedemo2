@@ -1,0 +1,66 @@
+<nz-modal
+        [nzClosable]="true"
+        (nzOnCancel)="common.toggleModal('calendarEventDetails')"
+        [(nzVisible)]="common.modals.calendarEventDetails"
+        [nzTitle]="common.translate(['Event', 'Details'])"
+>
+    <ng-container *nzModalContent>
+        <div class="d-block">
+            <nz-descriptions [nzColumn]="2" [nzTitle]="common.translate(['Event', 'Date/Time'])">
+                <nz-descriptions-item [nzTitle]="common.translate('Start Date')">
+                    {{ item.startDate | date: settings.dateFormat }}
+                </nz-descriptions-item>
+                <nz-descriptions-item [nzTitle]="common.translate('End Date')">
+                    {{ item.endDate | date: settings.dateFormat }}
+                </nz-descriptions-item>
+                <nz-descriptions-item [nzTitle]="common.translate(['Start', 'Time'])">
+                    {{ item.startTime | date: settings.timeFormat }}
+                </nz-descriptions-item>
+                <nz-descriptions-item [nzTitle]="common.translate(['End', 'Time'])">
+                    {{ item.endTime | date: settings.timeFormat }}
+                </nz-descriptions-item>
+            </nz-descriptions>
+            <nz-divider></nz-divider>
+            <nz-descriptions [nzColumn]="2" [nzTitle]="common.translate(['Event', 'Details'])">
+                <nz-descriptions-item [nzTitle]="common.translate('Name')">
+                    {{ item.name }}
+                </nz-descriptions-item>
+                <nz-descriptions-item [nzTitle]="common.translate('Location')">
+                    {{ item.location }}
+                </nz-descriptions-item>
+                <nz-descriptions-item [nzTitle]="common.translate('Type')">
+                    {{ item.EventType?.name }}
+                </nz-descriptions-item>
+                <nz-descriptions-item [nzTitle]="common.translate('Status')">
+                    {{ common.translate(item.status) }}
+                </nz-descriptions-item>
+            </nz-descriptions>
+            <nz-descriptions [nzColumn]="1">
+                <nz-descriptions-item [nzTitle]="common.translate('Description')">
+                    {{ item.description }}
+                </nz-descriptions-item>
+            </nz-descriptions>
+            <nz-descriptions [nzColumn]="1">
+                <nz-descriptions-item [nzTitle]="common.translate('Notes')">
+                    {{ item.notes || "N/A" }}
+                </nz-descriptions-item>
+            </nz-descriptions>
+            <nz-descriptions [nzColumn]="1">
+                <nz-descriptions-item [nzTitle]="common.translate('Sold Tickets')">
+                    {{ item.EventParticipants.length }}
+                </nz-descriptions-item>
+            </nz-descriptions>
+        </div>
+    </ng-container>
+    <div *nzModalFooter>
+        <button (click)="editEvent()"
+                nz-button>
+            {{ common.translate("Edit") }}
+        </button>
+        <button (click)="common.toggleModal('calendarEventDetails')"
+                nz-button
+                nzType="primary">
+            {{ common.translate("Close") }}
+        </button>
+    </div>
+</nz-modal>

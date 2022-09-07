@@ -1,0 +1,89 @@
+<!-- ****************************************************** -->
+<!-- APP HEADER -->
+<!-- ****************************************************** -->
+<nz-page-header class="app-header" [nzGhost]="false">
+    <!-- ************** -->
+    <!-- HERDER TITLE -->
+    <!-- ************** -->
+    <nz-page-header-title>
+        <img class="logo"
+             [src]="common.user()?.logo ? apiUrl + '/' + common.user()?.logo : 'assets/logo.png'"
+             alt="Company Logo"/>
+    </nz-page-header-title>
+    <!-- ************** -->
+    <!-- HEADER EXTRAS -->
+    <!-- ************** -->
+    <nz-page-header-extra class="d-flex align-items-center">
+        <!-- ************** -->
+        <!-- PROFILE SETTINGS -->
+        <!-- ************** -->
+        <nz-avatar
+                nz-dropdown
+                nzTrigger="click"
+                [nzDropdownMenu]="menu"
+                [nzGap]="4"
+                [ngStyle]="{ 'background-color': '#00a2ae', cursor: 'pointer' }"
+                [nzText]="common.user()?.name ? common.user().name[0] : 'S'"
+                nzSize="large"
+                style="vertical-align: middle"
+        ></nz-avatar>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item (click)="toggleFullscreen()">
+                    <i nz-icon nzType="fullscreen" nzTheme="outline"></i>
+                    {{ common.translate("fullscreen") }}
+                </li>
+                <li nz-menu-item (click)="common.logout()">
+                    <i nz-icon nzType="logout" nzTheme="outline"></i>
+                    {{ common.translate("Logout") }}
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+        <!-- ************** -->
+        <!-- LANGUAGES -->
+        <!-- ************** -->
+        <nz-select class="text-upper text-gray lang-select"
+                   [nzBorderless]="true"
+                   [nzBackdrop]="true"
+                   [ngStyle]="{ background: 'transparent' }"
+                   [nzDropdownStyle]="{ width: '100px' }"
+                   [(ngModel)]="common.language"
+                   (ngModelChange)="common.changeLanguage($event)"
+        >
+            <nz-option *ngFor="let language of languages"
+                       [nzValue]="language"
+                       [nzLabel]="language"
+                       [nzCustomContent]="true"
+            >
+                <span class="mr-5 text-upper">{{ language }}</span>
+                <img class="mr-1" src="assets/{{ language }}.png"/>
+            </nz-option>
+        </nz-select>
+        <img class="mr-1" src="assets/{{ common.language }}.png"/>
+    </nz-page-header-extra>
+    <!-- ************** -->
+    <!-- HEADER CONTENT -->
+    <!-- ************** -->
+    <nz-page-header-footer>
+        <ul nzTheme="dark" nz-menu nzMode="horizontal">
+            <ng-container *ngFor="let link of links">
+                <ng-container *ngIf="common.isAccessAllowed(link.model, link.permission)">
+                    <li nz-menu-item nzMatchRouter [nzMatchRouterExact]="true">
+                        <a [routerLink]="[link.route]">
+                            <i nz-icon [nzType]="link.icon"></i>
+                            {{ common.translate(link.title) }}
+                        </a>
+                    </li>
+                </ng-container>
+            </ng-container>
+            <ng-container>
+                <li nz-menu-item nzMatchRouter>
+                    <a [routerLink]="['/management']">
+                        <i nz-icon [nzType]="'setting'"></i>
+                        {{ common.translate("Management") }}
+                    </a>
+                </li>
+            </ng-container>
+        </ul>
+    </nz-page-header-footer>
+</nz-page-header>

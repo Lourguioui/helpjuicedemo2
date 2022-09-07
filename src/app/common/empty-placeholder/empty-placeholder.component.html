@@ -1,0 +1,5 @@
+<nz-empty nzNotFoundImage="assets/empty.svg" [nzNotFoundContent]="contentTpl">
+	<ng-template #contentTpl>
+		<span> {{ text ? common.translate(text) : common.translate("No Data Found") }}</span>
+	</ng-template>
+</nz-empty>

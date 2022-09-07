@@ -1,0 +1,95 @@
+<!-- MAIN CONTENT -->
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+    <nz-row nzGutter="15">
+        <!-- IF NO DATA  -->
+        <ng-container *ngIf="event.EventParticipants.length === 0">
+            <nz-col nzMd="24">
+                <button nz-button nzType="primary" (click)="addParticipant()">
+                    {{ common.translate(["Add", "New"]) }}
+                </button>
+                <app-empty-placeholder></app-empty-placeholder>
+            </nz-col>
+        </ng-container>
+        <!-- PARTICIPANTS DATA  -->
+        <nz-col nzMd="24">
+            <nz-tabset nzType="editable-card"
+                       [(nzSelectedIndex)]="selectedTab"
+                       (nzAdd)="addParticipant()"
+                       (nzClose)="removeParticipant($event)">
+                    <nz-tab *ngFor="let eventParticipant of event.EventParticipants; let i = index"
+                            nzClosable
+                            [nzForceRender]="true"
+                            [nzTitle]="participant_tab_title">
+                        <!-- PARTICIPANTS TAB TITLE TEMPLATE  -->
+                        <form [formGroup]="participantFormGroups[i]"> 
+                        <ng-template #participant_tab_title>    
+                            <i nz-icon nzType="user" nzTheme="outline"></i>
+                            <ng-container *ngIf="!participantFormGroups[i].valid">
+                                <i style="color: red"
+                                   nz-icon
+                                   nzType="exclamation"
+                                   nzTheme="outline">
+                                </i>
+                            </ng-container>
+                        </ng-template>
+                        <!-- PARTICIPANTS DATA  -->
+
+                        <nz-row nzGutter="15">
+                            <!-- NAME -->
+                            <nz-col nzMd="8" nzXs="24">
+                                <nz-form-item class="flex-column">
+                                    <nz-form-label nzRequired>
+                                        {{ common.translate("Name") }}
+                                    </nz-form-label>
+                                    <nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+                                        <input required
+                                               nz-input
+                                               [placeholder]="common.translate('Name')"
+                                               formControlName="name"/>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </nz-col>
+                            <!-- EMAIL -->
+                            <nz-col nzMd="8" nzXs="24">
+                                <nz-form-item class="flex-column">
+                                    <nz-form-label nzRequired>
+                                        {{ common.translate("Email") }}
+                                    </nz-form-label>
+                                    <nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+                                        <input required
+                                               nz-input
+                                               [placeholder]="common.translate('Email')"
+                                               formControlName="email"/>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </nz-col>
+                            <!-- AGE -->
+                            <nz-col nzMd="8" nzXs="24">
+                                <nz-form-item class="flex-column">
+                                    <nz-form-label nzRequired>
+                                        {{ common.translate("Age") }}
+                                    </nz-form-label>
+                                    <nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+                                        <input required
+                                               nz-input
+                                               [placeholder]="common.translate('Age')"
+                                               formControlName="age"/>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </nz-col>
+                            <!-- PHONE -->
+                            <nz-col nzMd="8" nzXs="24">
+                                <nz-form-item class="flex-column">
+                                        <app-phone-input [msgError]="common.translate('This phone number is invalid!')"
+                                                         [label]="common.translate('Phone')"
+                                                         [formControl]="participantFormGroups[i].get('phone')"        
+                                        ></app-phone-input>
+                                </nz-form-item>
+                            </nz-col>
+                        </nz-row>
+                        </form>
+                    </nz-tab>   
+            </nz-tabset>
+        </nz-col>
+    </nz-row>
+</nz-spin>

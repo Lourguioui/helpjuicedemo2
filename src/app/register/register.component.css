@@ -1,0 +1,9 @@
+/**
+* Styles
+*/
+::ng-deep .ant-select-selector {
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	color: #1b1818;
+}

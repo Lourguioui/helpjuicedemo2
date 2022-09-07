@@ -1,0 +1,92 @@
+{
+	"CRM": {
+		"icon": "team",
+		"permissions": ["Participant", "Customer"],
+		"links": [
+			{
+				"permissions": ["Customer"],
+				"route": "customers",
+				"icon": "user",
+				"title": "Customers"
+			},
+			{
+				"permissions": ["Participant"],
+				"route": "participants",
+				"icon": "team",
+				"title": "Participants"
+			}
+		]
+	},
+	"Events": {
+		"icon": "carry-out",
+		"permissions": ["EventType", "Event", "Organizer"],
+		"links": [
+			{
+				"permissions": ["EventType"],
+				"route": "event-types",
+				"icon": "pushpin",
+				"title": "Event Types"
+			},
+			{
+				"permissions": ["Organizer"],
+				"route": "organizers",
+				"icon": "team",
+				"title": "Event Organizers"
+			}
+		]
+	},
+	"RATES": {
+		"icon": "dollar",
+		"permissions": ["RateManagement"],
+		"links": [
+			{
+				"permissions": ["RateManagement"],
+				"route": "rate-management",
+				"icon": "price_change",
+				"title": "Rate Management"
+			}
+		]
+	},
+	"Management": {
+		"icon": "setting",
+		"permissions": ["Invoice", "StaffGroup", "Staff", "Payment", "Settings", "Log"],
+		"links": [
+			{
+				"permissions": ["Invoice"],
+				"route": "invoices",
+				"icon": "account-book",
+				"title": "Invoices"
+			},
+			{
+				"permissions": ["Payment"],
+				"route": "payments",
+				"icon": "credit-card",
+				"title": "Payments"
+			},
+			{
+				"permissions": ["StaffGroup"],
+				"route": "staff-groups",
+				"icon": "usergroup-add",
+				"title": "Staff Groups"
+			},
+			{
+				"permissions": ["Staff"],
+				"route": "staff",
+				"icon": "user",
+				"title": "Staff"
+			},
+			{
+				"permissions": ["Settings"],
+				"route": "settings",
+				"icon": "setting",
+				"title": "Settings"
+			},
+			{
+				"permissions": ["Log"],
+				"route": "logs",
+				"icon": "bug",
+				"title": "Logs"
+			}
+		]
+	}
+}

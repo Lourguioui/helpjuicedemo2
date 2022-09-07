@@ -1,0 +1,13 @@
+/**
+* Styles
+*/
+.link {
+	color: rgb(75, 75, 255);
+	cursor: pointer;
+}
+.mat-icon {
+	color: red;
+	width: auto;
+	height: auto;
+	font-size: 50px;
+}

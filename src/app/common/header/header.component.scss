@@ -1,0 +1,31 @@
+.app-header {
+    background-color: #fff;
+    color: #a3a0a0;
+    padding: 0;
+}
+
+.ant-page-header-footer > .ant-menu {
+    background: #0d3c67 !important;
+}
+
+::ng-deep .ant-page-header-heading {
+    padding: 5px 15px;
+}
+
+::ng-deep .ant-page-header-footer {
+    margin: 0;
+}
+
+.logo {
+    max-height: 40px;
+    width: auto;
+}
+
+::ng-deep .message-details .ant-descriptions-item-label {
+    font-weight: bold !important;
+}
+
+::ng-deep .cdk-overlay-pane {
+    max-width: 100% !important;
+    min-width: 100px !important;
+}

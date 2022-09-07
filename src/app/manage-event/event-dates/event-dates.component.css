@@ -1,0 +1,15 @@
+.day-checkbox {
+  min-width: 50px !important;
+}
+::ng-deep .ngx-timepicker {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  height: 30px !important;
+  padding-bottom: 15px !important;
+  padding-top: 15px !important;
+}
+
+.inputSuffix {
+  color: rgba(0, 0, 0, 0.25);
+}

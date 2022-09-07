@@ -1,0 +1,28 @@
+/**
+* Styles
+*/
+.file-image {
+	max-width: 130px;
+	height: auto;
+}
+.thumbnail {
+	max-width: 100px;
+	height: auto;
+}
+.mat-dialog-container {
+	background: #f7f6f2;
+	position: relative;
+}
+.dialog-close-btn {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	z-index: 99;
+}
+.xs-small,
+.xs-small .mat-icon {
+	width: 20px;
+	height: 20px;
+	font-size: 20px;
+	line-height: 20px;
+}

@@ -1,0 +1,110 @@
+<!-- ****************************************************** -->
+<!-- MAIN CONTENT -->
+<!-- ****************************************************** -->
+<app-external-page>
+	<nz-card class="box-shadow">
+		<!-- *************** -->
+		<!-- SPINNER -->
+		<!-- *************** -->
+		<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+			<!-- *************** -->
+			<!-- TITLE -->
+			<!-- *************** -->
+			<h1 class="text-center">{{ common.translate("Sign Up") }}</h1>
+			<!-- *************** -->
+			<!-- FORM -->
+			<!-- *************** -->
+			<form nz-form [formGroup]="formGroup" class="login-form" (ngSubmit)="submit()">
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+						<nz-input-group nzPrefixIcon="user">
+							<input
+								type="text"
+								nz-input
+								formControlName="name"
+								[placeholder]="common.translate('Name')"
+							/>
+						</nz-input-group>
+					</nz-form-control>
+				</nz-form-item>
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+						<nz-input-group nzPrefixIcon="mail">
+							<input
+								type="text"
+								nz-input
+								formControlName="email"
+								[placeholder]="common.translate('Email')"
+							/>
+						</nz-input-group>
+					</nz-form-control>
+				</nz-form-item>
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+						<nz-input-group nzPrefixIcon="lock">
+							<input
+								type="password"
+								nz-input
+								formControlName="password"
+								[placeholder]="common.translate('Password')"
+							/>
+						</nz-input-group>
+					</nz-form-control>
+				</nz-form-item>
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+						<nz-input-group nzPrefixIcon="global">
+							<nz-select
+								nzShowSearch
+								nzAllowClear
+								[nzBorderless]="true"
+								[nzPlaceHolder]="common.translate('Select Country')"
+								formControlName="country"
+							>
+								<nz-option
+									*ngFor="let country of countries"
+									[nzLabel]="country.country"
+									[nzValue]="country.country"
+								></nz-option>
+							</nz-select>
+						</nz-input-group>
+					</nz-form-control>
+				</nz-form-item>
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+						<nz-input-group nzPrefixIcon="dollar">
+							<nz-select
+								nzShowSearch
+								nzAllowClear
+								[nzBorderless]="true"
+								[nzPlaceHolder]="common.translate('Select Currency')"
+								formControlName="currency"
+							>
+								<nz-option
+									*ngFor="let currency of currencies"
+									[nzLabel]="currency.label"
+									[nzValue]="currency.value"
+								></nz-option>
+							</nz-select>
+						</nz-input-group>
+					</nz-form-control>
+				</nz-form-item>
+				<div nz-row class="login-form-margin">
+					<div nz-col [nzSpan]="12">
+						<a [routerLink]="['/log-in']">
+							{{ common.translate("Login") }}
+						</a>
+					</div>
+					<div nz-col [nzSpan]="12">
+						<a [routerLink]="['/forgot-password']" class="login-form-forgot">
+							{{ common.translate("Forgot password?") }}
+						</a>
+					</div>
+				</div>
+				<button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">
+					{{ common.translate("Submit") }}
+				</button>
+			</form>
+		</nz-spin>
+	</nz-card>
+</app-external-page>

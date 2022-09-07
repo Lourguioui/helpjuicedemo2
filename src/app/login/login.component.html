@@ -1,0 +1,60 @@
+<app-external-page>
+	<nz-card class="box-shadow">
+		<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+			<!-- *************** -->
+			<!-- TITLE -->
+			<!-- *************** -->
+			<h1 class="text-center">{{ common.translate("Login") }}</h1>
+			<!-- *************** -->
+			<!-- FORM -->
+			<!-- *************** -->
+			<form nz-form [formGroup]="formGroup" class="login-form" (ngSubmit)="submit()">
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+						<nz-input-group nzPrefixIcon="mail">
+							<input
+								type="text"
+								nz-input
+								formControlName="email"
+								[placeholder]="common.translate('Email')"
+							/>
+						</nz-input-group>
+					</nz-form-control>
+				</nz-form-item>
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+						<nz-input-group nzPrefixIcon="lock">
+							<input
+								type="password"
+								nz-input
+								formControlName="password"
+								[placeholder]="common.translate('Password')"
+							/>
+						</nz-input-group>
+					</nz-form-control>
+				</nz-form-item>
+				<div nz-row class="login-form-margin">
+					<div nz-col [nzSpan]="12"></div>
+					<div nz-col [nzSpan]="12">
+						<a [routerLink]="['/forgot-password']" class="login-form-forgot">
+							{{ common.translate("Forgot password?") }}
+						</a>
+					</div>
+				</div>
+				<button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">
+					{{ common.translate("Login") }}
+				</button>
+				{{ common.translate("Or") }}
+				<a [routerLink]="['/register']">
+					{{ common.translate("Sign Up") }}
+				</a>
+				<div class="text-center mt-15">
+					<span class="text-black"> {{ common.translate("Staff Member?") }} </span>
+					<a [routerLink]="['/staff-log-in']">
+						{{ common.translate("Staff Login") }}
+					</a>
+				</div>
+			</form>
+		</nz-spin>
+	</nz-card>
+</app-external-page>

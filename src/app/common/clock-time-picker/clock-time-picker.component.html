@@ -1,0 +1,36 @@
+<nz-form-item class="flex-column">
+    <nz-form-label nzRequired>
+        {{ inputLabel }}
+    </nz-form-label>
+
+    <nz-form-control [nzErrorTip]="clockErrorTip">
+        <nz-input-group [nzSuffix]="suffixIconClock">
+            <input type="text"
+                   [formControl]="clockFormControl"
+                   [ngxTimepicker]="startTimePicker"
+                   nz-input
+                   placeholder="Select Time"
+                   [format]="format"/>
+            <ngx-material-timepicker #startTimePicker
+                                     [theme]="clockTheme"
+                                     [defaultTime]="format === 24 ? '00:00' : '12:00 AM'">
+            </ngx-material-timepicker>
+
+        </nz-input-group>
+        <ng-template #suffixIconClock>
+            <i nz-icon
+               nzType="clock-circle"
+               class="inputSuffix"
+               nzTheme="outline">
+            </i>
+        </ng-template>
+        <ng-template #clockErrorTip>
+            <ng-container *ngIf="clockFormControl.hasError('required')">
+                {{ common.translate('This field is required!') }}
+            </ng-container>
+            <ng-container *ngIf="clockFormControl.hasError('invalid')">
+                {{ common.translate('End time should not be before start time!') }}
+            </ng-container>
+        </ng-template>
+    </nz-form-control>
+</nz-form-item>

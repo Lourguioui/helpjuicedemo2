@@ -1,0 +1,28 @@
+::ng-deep .ant-drawer-header {
+    background-color: #0d3c67 !important;
+    color: #fff !important;
+}
+
+::ng-deep .ant-drawer-title {
+    color: #fff !important;
+}
+
+::ng-deep .ant-drawer-close {
+    color: #fff !important
+}
+
+::ng-deep .ant-divider-horizontal {
+    margin: 10px 0 !important;
+}
+
+::ng-deep .ant-form-item-label.no-colon > label::after {
+    content: "";
+}
+
+::ng-deep body {
+    background: #ffffff !important;
+}
+
+.info-box {
+    min-height: 170px;
+}

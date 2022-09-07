@@ -1,0 +1,66 @@
+<!-- OLD FILES (IF ARRAY) -->
+<ng-container *ngIf="common.isArray(item[field])">
+    <ng-container *ngFor="let file of item[field]; let i = index">
+        <div class="img-box">
+            <button
+                    class="remove-btn"
+                    nz-button
+                    nzType="text"
+                    nzShape="circle"
+                    nzDanger
+                    nzSize="small"
+                    (click)="removeOldFile(file)">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button>
+            <img class="thumbnail" [src]="apiUrl + file.path"/>
+        </div>
+    </ng-container>
+</ng-container>
+<ng-container *ngIf="item.thumbnails?.length > 0">
+    <ng-container *ngFor="let thumb of item.thumbnails; let i = index">
+        <div class="img-box">
+            <button
+                    class="remove-btn"
+                    nz-button
+                    nzType="text"
+                    nzShape="circle"
+                    nzDanger
+                    nzSize="small"
+                    (click)="removeOldFile(i)">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button>
+            <img class="thumbnail" [src]="thumb"/>
+        </div>
+    </ng-container>
+</ng-container>
+<!-- OLD FILES (IF SINGLE) -->
+<ng-container *ngIf="!thumbnails?.length && item[field] && !common.isArray(item[field])">
+    <div class="img-box">
+        <img class="thumbnail" [src]="apiUrl + item[field]"/>
+    </div>
+</ng-container>
+<!-- NEW FILES -->
+<ng-container *ngIf="!(this.item.thumbnails?.length > 0)">
+    <ng-container *ngFor="let thumbnail of thumbnails; let i = index">
+        <div class="img-box">
+            <button
+                    class="remove-btn"
+                    nz-button
+                    nzType="text"
+                    nzShape="circle"
+                    nzDanger
+                    nzSize="small"
+                    (click)="removeFile(i)">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button>
+            <img class="thumbnail" [src]="thumbnail"/>
+        </div>
+    </ng-container>
+</ng-container>
+<!-- UPLOAD INPUT -->
+<div class="custom-upload-button">
+    <label>
+        {{ common.translate("Upload") }}
+    </label>
+    <input [accept]="accept" [multiple]="multiple" type="file" (change)="fileOnChange($event)"/>
+</div>

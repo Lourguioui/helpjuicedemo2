@@ -1,0 +1,81 @@
+<nz-spin nzTip="Loading..."
+         [nzSpinning]="isUploading">
+<mat-dialog-content class="full-height mh-100"
+                    style="overflow-x: hidden">
+    <div class="d-flex flex-column align-items-end position-relative full-height p-3">
+        <div class="d-flex justify-content-between full-width">
+
+            <div class="d-flex justify-content-start">
+                <ng-container *ngIf="showImageCropper && !image?.image">
+                    <span *ngFor="let sizeOption of sizeOptions;let i= index"
+                          (click)="sizeOptionClicked(sizeOption,i)"
+                          class="d-flex justify-content-center align-items-center border font-medium-1 mx-1 clickable-row"
+                          style="border-style: dashed !important;"
+                          [style.width]="(sizeOption.aspectRatio * 100)+'px'"
+                          [style.height]="((1/sizeOption.aspectRatio) * 100)+'px'">
+                        {{sizeOption.text}}
+                    </span>
+                </ng-container>
+            </div>
+        </div>
+        <div class="display-flex justify-content-center align-items-center pl-3 pr-3 border mt-3 flex-grow-1 position-relative"
+             style="width: 100%;min-height: 300px;overflow: hidden;max-height: 600px;">
+            <div class="display-flex justify-content-center align-items-center"
+                 style="position: absolute;top: 0;left: 0;right: 0;bottom: 0">
+                <image-cropper *ngIf="showImageCropper"
+                               (cropperReady)="onImageLoaded()"
+                               (imageCropped)="onImageCropped($event)"
+                               [format]="outputFormat"
+                               (loadImageFailed)="onImageLoadingFailed()"
+                               [aspectRatio]="aspectRatio"
+                               [imageChangedEvent]="imageChangedEvent"
+                               [imageQuality]="100"
+                               [maintainAspectRatio]="maintainAspectRatio"
+                               [resizeToHeight]="resizeHeight"
+                               [resizeToWidth]="resizeWidth"
+                               [transform]="transform"
+                               [onlyScaleDown]="true"
+                               (wheel)="scaleImage($event)"
+                               [containWithinAspectRatio]="false"
+                               [backgroundColor]="outputFormat==='png'?'transparent':'white'"
+                               class="mw-100"></image-cropper>
+
+                <img *ngIf="!showImageCropper && image?.image"
+                     [src]="getImage(image)"
+                     alt=""
+                     style="max-width: 100%;height: 100%; display: block;
+                     margin-left: auto;
+                     margin-right: auto;
+                     margin-top: 15px;">
+            </div>
+        </div>
+
+        <div class="display-flex justify-content-end align-items-center mt-3 mb-3 flex-column-reverse flex-sm-row">
+            <button (click)="cancelClick()" nz-button  class="mr-sm-2 mr-0 mt-2 mt-sm-0">
+                {{ common.translate("Cancel") }}
+            </button>
+
+            <button (click)="crop()"
+                    *ngIf="imageChangedEvent"
+                    class="text-uppercase"
+                    color="accent"
+                    nz-button
+                    nzType="primary"
+                    style="border-radius: 0;width: 70px;margin-left:10px;">{{ common.translate("Crop") }}
+            </button>
+
+            <button (click)="saveClicked()"
+                    *ngIf="showUpload"
+                    class="text-uppercase main-button"
+                    color="accent"
+                    nz-button
+                    nzType="primary"
+                    style="border-radius: 0;width: 70px;margin-left:10px;"
+                    type="button">{{ common.translate("Save") }}
+            </button>
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+</nz-spin>

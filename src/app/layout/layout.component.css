@@ -1,0 +1,10 @@
+/**
+* Styles
+*/
+::ng-deep footer {
+	background: #001529 !important;
+	border-top: 1px solid #d6d6d6 !important;
+}
+::ng-deep footer p {
+	color: rgba(255, 255, 255, 0.65);
+}

@@ -1,0 +1,63 @@
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+	<div class="d-block p-15">
+		<div class="container">
+			<nz-card class="box-shadow">
+				<nz-row nzGutter="15">
+					<nz-col nzMd="24">
+						<h1 class="m-0">+ {{ common.translate("New Event") }}</h1>
+						<nz-divider></nz-divider>
+					</nz-col>
+				</nz-row>
+				<!-- STEPS -->
+				<nz-steps class="mb-15" [nzCurrent]="currentStep">
+
+					<!-- DATE/TIME STEP -->
+					<nz-step [nzTitle]="common.translate('Date/Time')"> </nz-step>
+
+					<!--DETAILS STEP -->
+					<nz-step [nzTitle]="common.translate(['Event', 'Details'])"> </nz-step>
+
+					<!--ORGANIZERS STEP -->
+					<nz-step [nzTitle]="common.translate('Event Organizers')"></nz-step>
+
+					<!-- PARTICIPANTS STEP -->
+					<nz-step [nzTitle]="common.translate(['Event', 'Participants'])"></nz-step>
+				</nz-steps>
+				<nz-divider></nz-divider>
+				<!-- STEP CONTENTS -->
+
+				<!-- DATE/TIME CONTENT -->
+				<app-event-dates *ngIf="currentStep === 0" [(event)]="event" [settings]="settings"></app-event-dates>
+
+ 				<!-- DETAILS CONTENT -->
+ 				<app-event-details *ngIf="currentStep === 1" [(event)]="event"></app-event-details>
+
+ 				<!-- ORGANIZERS CONTENT -->
+ 				<app-event-organizers *ngIf="currentStep === 2" [(event)]="event"></app-event-organizers>
+
+ 				<!-- PARTICIPANTS CONTENT -->
+ 				<app-event-participants *ngIf="currentStep === 3" [(event)]="event"></app-event-participants>
+				 
+ 				<!-- NAVIGATION BUTTONS -->
+ 				<nz-divider></nz-divider>
+				<nz-row nzGutter="15">
+					<nz-col nzMd="24" class="justify-content-end">
+						<div class="d-flex align-items-center justify-content-end">
+							<button (click)="previous()" class="mr-15" nz-button nzType="default">
+								{{ common.translate("Previous") }}
+							</button>
+							<button (click)="next()" nz-button nzType="primary">
+								<span *ngIf="currentStep < 3">
+									{{ common.translate("Next") }}
+								</span>
+								<span *ngIf="currentStep === 3">
+									{{ common.translate("Submit") }}
+								</span>
+							</button>
+						</div>
+					</nz-col>
+				</nz-row>
+			</nz-card>
+		</div>
+	</div>
+</nz-spin>

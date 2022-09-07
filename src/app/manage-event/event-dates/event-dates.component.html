@@ -1,0 +1,271 @@
+<!-- MAIN CONTENT -->
+<nz-row nzGutter="15"
+        [formGroup]="eventDatesFormGroup">
+    <!-- START DATE -->
+    <nz-col nzMd="6" nzSm="12" nzXs="24">
+        <nz-form-item class="flex-column">
+            <nz-form-label nzRequired>
+                {{ common.translate(["Start", "Date"]) }}
+            </nz-form-label>
+            <nz-form-control [nzErrorTip]="startDateErrorTip">
+                <nz-input-group>
+                    <nz-date-picker class="w-100"
+                                    [formControl]="startDateFormControl"
+                                    [nzAllowClear]="true"
+                                    (ngModelChange)="openDatePicker(endDatePicker, startDateFormControl.value)"
+                                    [nzShowToday]="false"
+                                    [nzFormat]="settings.dateFormat">
+                    </nz-date-picker>
+                </nz-input-group>
+                <ng-template #startDateErrorTip>
+                    <ng-container>
+                        {{ common.translate('This field is required!') }}
+                    </ng-container>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+    </nz-col>
+    <!-- END DATE -->
+    <nz-col nzMd="6" nzSm="12" nzXs="24">
+        <nz-form-item class="flex-column">
+            <nz-form-label nzRequired>
+                {{ common.translate(["End", "Date"]) }}
+            </nz-form-label>
+            <nz-form-control [nzErrorTip]="endDateErrorTip">
+                <nz-input-group>
+                    <nz-date-picker class="w-100"
+                                    #endDatePicker
+                                    [formControl]="endDateFormControl"
+                                    [nzAllowClear]="true"
+                                    [nzShowToday]="false"
+                                    [nzFormat]="settings.dateFormat">
+                    </nz-date-picker>
+                    <ng-template #endDateErrorTip>
+                        <ng-container *ngIf="endDateFormControl.hasError('required')">
+                            {{ common.translate('This field is required!') }}
+                        </ng-container>
+                        <ng-container *ngIf="endDateFormControl.hasError('invalid')">
+                            {{common.translate('End date can not be before start date!')}}
+                        </ng-container>
+                    </ng-template>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+    </nz-col>
+    <!-- START TIME -->
+    <nz-col nzMd="6" nzSm="12" nzXs="24">
+        <app-clock-time-picker [clockFormControl]="startTimeFormControl"
+                               [inputLabel]="this.common.translate(['Start', 'Time'])"
+                               [format]="settings.clockFormat"></app-clock-time-picker>
+    </nz-col>
+    <!-- END TIME -->
+    <nz-col nzMd="6" nzSm="12" nzXs="24">
+        <app-clock-time-picker [clockFormControl]="endTimeFormControl"
+                               [inputLabel]="common.translate(['End', 'Time'])"
+                               [format]="settings.clockFormat"></app-clock-time-picker>
+    </nz-col>
+    <nz-divider *ngIf="repeatFormControl.value"></nz-divider>
+    <!-- REPEAT -->
+    <nz-col nzMd="24" nzSm="24" nzXs="24">
+        <nz-form-item class="flex-column">
+            <nz-form-label>
+                {{ common.translate(["Repeated", "Event"]) }}
+            </nz-form-label>
+            <nz-form-control>
+                <label nz-checkbox
+                       [formControl]="repeatFormControl">
+                    {{ common.translate("Repeat") }}
+                </label>
+            </nz-form-control>
+        </nz-form-item>
+    </nz-col>
+    <ng-container *ngIf="repeatFormControl.value">
+        <!-- REPEAT TYPE -->
+        <nz-col nzMd="24" nzSm="24">
+            <nz-space class="align-items-center">
+				<span *nzSpaceItem>
+					{{ common.translate(["Repeat", "On"]) }}
+				</span>
+                <nz-form-item class="m-0" *nzSpaceItem>
+                    <nz-form-control [nzErrorTip]="repeatDaysErrorTip">
+                        <nz-select [formControl]="repeatDaysFormControl"
+                                   nzMode="multiple">
+                            <nz-option *ngFor="let day of weekDays; let i = index"
+                                       [nzLabel]="common.translate(day)"
+                                       [nzValue]="i">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                    <ng-template #repeatDaysErrorTip>
+                        <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                    </ng-template>
+                </nz-form-item>
+                <span *nzSpaceItem>
+					{{ common.translate(["Repeat", "Every"]) }}
+				</span>
+                <nz-form-item class="m-0" *nzSpaceItem>
+                    <nz-form-control [nzErrorTip]="intervalCountErrorTip">
+                        <nz-input-number [formControl]="intervalCountFormControl"
+                                         [nzMin]="1"
+                                         [nzStep]="1">
+                        </nz-input-number>
+                        <ng-template #intervalCountErrorTip>
+                            <ng-container>{{ common.translate('This field is required!') }}</ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-select *nzSpaceItem
+                           [formControl]="intervalTypeFormControl">
+                    <nz-option *ngFor="let intervalType of intervalTypes | keyvalue"
+                               [nzLabel]="intervalCountFormControl.value > 1
+										   ?common.translate(intervalType.value.toString().charAt(0).toUpperCase() + intervalType.value.toString().slice(1) + 's')
+										   :common.translate(intervalType.value.toString().charAt(0).toUpperCase() + intervalType.value.toString().slice(1))"
+                               [nzValue]="intervalType.value">
+                    </nz-option>
+                </nz-select>
+                <span *nzSpaceItem>
+					{{ common.translate("Ends") }}
+				</span>
+                <nz-radio-group *nzSpaceItem
+                                [formControl]="endTypeFormControl"
+                                (ngModelChange)="endsTypeOnChange($event)">
+                    <div *ngFor="let endType of endTypes | keyvalue">
+                        <label nz-radio
+                               [nzValue]="endType.value">
+                            {{common.translate(endType.value.toString().charAt(0).toUpperCase() + endType.value.toString().slice(1))}}
+                        </label>
+                        <br/>
+                    </div>
+                </nz-radio-group>
+                <ng-container *ngIf="endTypeFormControl.value === endTypes.After">
+                    <nz-form-item class="m-0"
+                                  *nzSpaceItem>
+                        <nz-form-control nzValidateStatus="{{ !event.EventRepeat.endValue ? 'error' : 'success' }}"
+                                         [nzErrorTip]="common.translate('This field is required!')">
+                            <nz-input-number [formControl]="endValueFormControl"
+                                             [nzMin]="1"
+                                             [nzStep]="1">
+                            </nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <span *nzSpaceItem>
+						{{ common.translate("Occurrences") }}
+					</span>
+                </ng-container>
+                <ng-container *ngIf="endTypeFormControl.value === endTypes.On">
+                    <nz-date-picker *nzSpaceItem
+                                    [nzAllowClear]="false"
+                                    [formControl]="endValueFormControl"
+                                    [nzDisabledDate]="endsOnDateDisabler"
+                                    [nzFormat]="settings.dateFormat">
+                    </nz-date-picker>
+                </ng-container>
+            </nz-space>
+        </nz-col>
+        <nz-divider></nz-divider>
+        <!-- NUMBER OF REPEATS PER DAY -->
+        <nz-col nzMd="24" nzSm="24">
+            <nz-form-item class="align-items-center">
+                <nz-form-label nzRequired>
+                    {{ common.translate("Repeats Per Day") }}
+                </nz-form-label>
+                <strong class="d-flex align-items-center justify-content-center">
+                    ( {{ event.EventRepeat.repeatsPerDay.length }} )
+                </strong>
+                <button class="ml-10"
+                        [nzTooltipTitle]="common.translate('Add')"
+                        nzTooltipPlacement="top"
+                        nz-tooltip
+                        nz-button
+                        nzType="default"
+                        nzShape="circle"
+                        nzSize="small"
+                        (click)="addRepeatPerDay()">
+                    <i nz-icon nzType="plus" nzTheme="outline"></i>
+                </button>
+            </nz-form-item>
+        </nz-col>
+        <!-- START/END TINE FOR REPEATS PER DAY -->
+        <ng-container *ngFor="let repeatPerDay of event.EventRepeat.repeatsPerDay; let i = index">
+            <nz-divider *ngIf="i > 0"></nz-divider>
+            <nz-col *ngIf="i > 0" nzMd="24" nzXs="24">
+                <div class="d-flex align-items-center justify-content-end">
+                    <button class="ml-10"
+                            [nzTooltipTitle]="common.translate('Remove')"
+                            nzTooltipPlacement="top"
+                            nz-tooltip
+                            nz-button
+                            nzType="default"
+                            nzShape="circle"
+                            nzSize="small"
+                            (click)="removeRepeatPerDay(i)">
+                        <i nz-icon nzType="close"
+                           nzTheme="outline">
+                        </i>
+                    </button>
+                </div>
+            </nz-col>
+            <!-- START TIME -->
+            <nz-col nzMd="12" nzXs="24">
+                <nz-form-item class="flex-column">
+                    <nz-form-label>
+                        {{ common.translate(["Start", "Time"]) }}
+                    </nz-form-label>
+                    <nz-form-control nzValidateStatus="{{ !repeatPerDay.startTime ? 'error' : 'success' }}"
+                                     [nzErrorTip]="common.translate('This field is required!')">
+                        <nz-input-group [nzSuffix]="suffixIconClock">
+                            <input type="text"
+                                   [ngxTimepicker]="repeatPerDayStartTimePicker"
+                                   [(ngModel)]="repeatPerDay.startTime"
+                                   [ngModelOptions]="{standalone: true}"
+                                   nz-input
+                                   placeholder="Select Time"
+                                   [format]="24"/>
+                            <ngx-material-timepicker #repeatPerDayStartTimePicker
+                                                     [theme]="clockTheme">
+                            </ngx-material-timepicker>
+                        </nz-input-group>
+                        <ng-template #suffixIconClock>
+                            <i nz-icon
+                               nzType="clock-circle"
+                               class="inputSuffix"
+                               nzTheme="outline">
+                            </i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-col>
+            <!-- END TIME -->
+            <nz-col nzMd="12" nzXs="24">
+                <nz-form-item class="flex-column">
+                    <nz-form-label>
+                        {{ common.translate(["End", "Time"]) }}
+                    </nz-form-label>
+                    <nz-form-control nzValidateStatus="{{ !repeatPerDay.endTime ? 'error' : 'success' }}"
+                                     [nzErrorTip]="common.translate('This field is required!')">
+                        <nz-input-group [nzSuffix]="suffixIconClock">
+                            <input type="text"
+                                   [ngxTimepicker]="repeatPerDayEndTimePicker"
+                                   [(ngModel)]="repeatPerDay.endTime"
+                                   [ngModelOptions]="{standalone: true}"
+                                   nz-input
+                                   placeholder="Select Time"
+                                   [format]="24"
+                                   [min]="repeatPerDay.startTime?.toString()"/>
+                            <ngx-material-timepicker #repeatPerDayEndTimePicker
+                                                     [theme]="clockTheme">
+                            </ngx-material-timepicker>
+                        </nz-input-group>
+                        <ng-template #suffixIconClock>
+                            <i nz-icon
+                               nzType="clock-circle"
+                               class="inputSuffix"
+                               nzTheme="outline">
+                            </i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-col>
+        </ng-container>
+    </ng-container>
+</nz-row>

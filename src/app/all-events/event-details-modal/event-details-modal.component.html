@@ -1,0 +1,70 @@
+<nz-modal [nzClosable]="true"
+          [(nzVisible)]="common.modals.detailsModal"
+          [nzTitle]="common.translate(['Event', 'Details'])"
+          (nzOnCancel)="common.toggleModal('detailsModal')"
+          [nzFooter]="null"
+          nzWidth="1100px">
+    <ng-container *nzModalContent>
+        <nz-descriptions [nzColumn]="2"
+                         [nzTitle]="common.translate(['Event', 'Date/Time'])">
+            <nz-descriptions-item [nzTitle]="common.translate('Start Date')">
+                {{ event.startDate | date: settings.dateFormat }}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="common.translate('End Date')">
+                {{ event.endDate | date: settings.dateFormat }}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="common.translate(['Start', 'Time'])">
+                {{ event.startTime | date: settings.timeFormat }}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="common.translate(['End', 'Time'])">
+                {{ event.endTime | date: settings.timeFormat }}
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-divider></nz-divider>
+        <nz-descriptions [nzColumn]="2"
+                         [nzTitle]="common.translate(['Event', 'Details'])">
+            <nz-descriptions-item [nzTitle]="common.translate('Name')">
+                {{ event.name }}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="common.translate('Location')">
+                {{ event.location.name }}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="common.translate('Type')">
+                {{ event.EventType?.name }}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="common.translate('Status')">
+                {{ common.translate(event.status) }}
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-descriptions [nzColumn]="1">
+            <nz-descriptions-item [nzTitle]="common.translate('Description')">
+                {{ event.description }}
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-descriptions [nzColumn]="1">
+            <nz-descriptions-item [nzTitle]="common.translate('Capacity')">
+                {{ event.numOfParticipants }}
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-descriptions [nzColumn]="1">
+            <nz-descriptions-item [nzTitle]="common.translate('Sold Tickets')">
+                {{ event.EventParticipants.length }}
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-descriptions [nzColumn]="1">
+            <nz-descriptions-item [nzTitle]="common.translate('Available tickets')">
+                {{ event.numOfParticipants - event.EventParticipants.length }}
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-descriptions [nzColumn]="1">
+            <nz-descriptions-item [nzTitle]="common.translate('Notes')">
+                {{ event.notes || "N/A" }}
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-descriptions [nzColumn]="1">
+            <nz-descriptions-item [nzTitle]="common.translate(['Current', 'Participants', 'Count'])">
+                {{ event.EventParticipants.length }}
+            </nz-descriptions-item>
+        </nz-descriptions>
+    </ng-container>
+</nz-modal>

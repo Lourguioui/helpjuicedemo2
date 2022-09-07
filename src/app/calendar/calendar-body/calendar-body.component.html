@@ -1,0 +1,88 @@
+<!-- CALENDAR BODY -->
+<div id="calendar-body" class="calendar-body">
+    <!-- CALENDAR DATA -->
+    <ng-container *ngFor="let item of data">
+        <!-- CALENDAR ROW -->
+        <div [attr.data]="item.id" class="calendar-row w-100 d-flex">
+            <!-- CALENDAR ROW INFO -->
+            <ng-container *ngFor="let infoCell of infoCells">
+                <div class="calendar-row-title d-flex align-items-center justify-content-center">
+                    <label> {{ displayData(item[0], infoCell.key) }} </label>
+                </div>
+            </ng-container>
+            <!-- CALENDAR CELLS WRAPPER -->
+            <div class="d-flex w-100 position-relative">
+                <!-- CALENDAR ROW CELLS -->
+                <ng-container *ngFor="let cell of headerCells">
+                    <div class="calendar-cell d-flex w-100 align-items-center justify-content-center"></div>
+                </ng-container>
+                <ng-container *ngFor="let event of item; let i = index" class="sub-row w-100 d-flex">
+                    <ng-template #popover_title>
+                        <strong>
+                            {{ event.name }}
+                        </strong>
+                    </ng-template>
+                    <ng-template #popover_content>
+					<span class="d-block">
+						<i class="mr-5"
+                           nz-icon
+                           nzType="calendar"
+                           nzTheme="outline">
+						</i>
+                        {{ common.translate(["Start", "Date"]) }}:
+                        {{ event.startDate | date: settings.dateFormat }}
+					</span>
+                        <span class="d-block">
+						<i class="mr-5"
+                           nz-icon
+                           nzType="clock-circle"
+                           nzTheme="outline">
+						</i>
+                            {{ common.translate(["Start", "Time"]) }}:
+                            {{ event.startTime | date: settings.timeFormat }}
+					</span>
+                        <span class="d-block">
+						<i class="mr-5"
+                           nz-icon
+                           nzType="calendar"
+                           nzTheme="outline">
+						</i>
+                            {{ common.translate(["End", "Date"]) }}:
+                            {{ event.endDate | date: settings.dateFormat }}
+					</span>
+                        <span class="d-block">
+						<i class="mr-5"
+                           nz-icon
+                           nzType="clock-circle"
+                           nzTheme="outline">
+						</i>
+                            {{ common.translate(["End", "Time"]) }}:
+                            {{ event.endTime | date: settings.timeFormat }}
+					</span>
+                    </ng-template>
+                    <button class="event-box d-flex flex-wrap align-items-center justify-content-center"
+                            [ngClass]="{
+							'pending-color': event.status === eventStatus.Pending,
+							'started-color': event.status === eventStatus.Started
+						}"
+                            nz-button
+                            nzType="default"
+                            nz-popover
+                            nzPopoverPlacement="right"
+                            [nzPopoverTitle]="popover_title"
+                            [nzPopoverContent]="popover_content"
+                            [ngStyle]="renderEvent(event)"
+                            (click)="eventOnClick(event)">
+                        {{ event.name }}
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+    <!-- IF EMPTY -->
+    <ng-container *ngIf="data.length === 0">
+        <app-empty-placeholder></app-empty-placeholder>
+    </ng-container>
+</div>
+<!-- EVENT DETAILS -->
+<app-calendar-event-details [item]="activeEvent" [settings]="settings"></app-calendar-event-details>

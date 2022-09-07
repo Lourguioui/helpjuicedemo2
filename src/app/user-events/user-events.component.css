@@ -1,0 +1,10 @@
+/**
+* Styles
+*/
+::ng-deep body {
+	background: #ffffff !important;
+}
+::ng-deep .ant-avatar.ant-avatar-circle.ng-star-inserted {
+	width: 120px;
+	height: 120px;
+}

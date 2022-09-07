@@ -1,0 +1,56 @@
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+	<h1>
+		{{ common.translate("Stripe Payment Configuration") }}
+	</h1>
+	<p>
+		{{ common.translate("You can create a stripe account by visiting this") }}
+		<a href="https://dashboard.stripe.com/register" target="_blank">{{ common.translate("link") }}.</a>
+	</p>
+	<nz-divider></nz-divider>
+	<div class="text-center max-600">
+		<form nz-form nzLayout="vertical" [formGroup]="formGroup" (ngSubmit)="submit()">
+			<nz-form-item class="flex-column">
+				<nz-form-label nzRequired>
+					{{ common.translate("Stripe Public Key") }}
+				</nz-form-label>
+				<nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+					<nz-input-group>
+						<input
+							type="text"
+							nz-input
+							formControlName="stripePK"
+							[placeholder]="common.translate('Stripe Public Key')"
+						/>
+					</nz-input-group>
+				</nz-form-control>
+			</nz-form-item>
+			<nz-form-item class="flex-column">
+				<nz-form-label nzRequired>
+					{{ common.translate("Stripe Secret Key") }}
+				</nz-form-label>
+				<nz-form-control [nzErrorTip]="common.translate('This field is required!')">
+					<nz-input-group>
+						<input
+							type="text"
+							nz-input
+							formControlName="stripeSK"
+							[placeholder]="common.translate('Stripe Secret Key')"
+						/>
+					</nz-input-group>
+				</nz-form-control>
+			</nz-form-item>
+			<nz-form-item>
+				<nz-form-control>
+					<label nz-checkbox formControlName="enableOnlinePayment">
+						{{ common.translate("Enable Online Payment") }}
+					</label>
+				</nz-form-control>
+			</nz-form-item>
+			<div class="d-flex align-items-center justify-content-end">
+				<button nz-button [nzType]="'primary'">
+					{{ common.translate("Save") }}
+				</button>
+			</div>
+		</form>
+	</div>
+</nz-spin>

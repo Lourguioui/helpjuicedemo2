@@ -1,0 +1,215 @@
+<!-- **************************************************** -->
+<!-- MAIN CONTENT -->
+<!-- **************************************************** -->
+<nz-spin nzTip="Loading..." [nzSpinning]="loading">
+	<div class="d-block p-15">
+		<!-- ******************* -->
+		<!-- DIVIDER -->
+		<!-- ******************* -->
+		<nz-divider [nzText]="common.translate(['Event', 'Analytics'])"></nz-divider>
+		<!-- ******************* -->
+		<!-- ROW -->
+		<!-- ******************* -->
+		<nz-row [nzGutter]="15">
+			<nz-col nzMd="8" nzXs="24">
+				<nz-card>
+					<nz-statistic
+						[nzValue]="totals.totalEvents"
+						[nzTitle]="common.translate(['Total', 'Events'])"
+						[nzPrefix]="prefixTotal"
+						[nzValueStyle]="{ 'font-size': '50px' }"
+					>
+					</nz-statistic>
+					<ng-template #prefixTotal>
+						<i nz-icon nzType="calendar" nzTheme="outline"></i>
+					</ng-template>
+				</nz-card>
+			</nz-col>
+			<nz-col nzMd="8" nzXs="24">
+				<nz-card>
+					<nz-statistic
+						[nzValue]="totals.upcomingEvents"
+						[nzTitle]="common.translate(['Upcoming', 'Events'])"
+						[nzPrefix]="prefixUpcoming"
+						[nzValueStyle]="{ 'font-size': '50px', color: 'orange' }"
+					>
+					</nz-statistic>
+					<ng-template #prefixUpcoming>
+						<i nz-icon nzType="hourglass" nzTheme="outline"></i>
+					</ng-template>
+				</nz-card>
+			</nz-col>
+			<nz-col nzMd="8" nzXs="24">
+				<nz-card>
+					<nz-statistic
+						[nzValue]="totals.activeEvents"
+						[nzTitle]="common.translate(['Active', 'Events'])"
+						[nzPrefix]="prefixActive"
+						[nzValueStyle]="{ 'font-size': '50px', color: 'green' }"
+					>
+					</nz-statistic>
+					<ng-template #prefixActive>
+						<i nz-icon nzType="field-time" nzTheme="outline"></i>
+					</ng-template>
+				</nz-card>
+			</nz-col>
+		</nz-row>
+		<!-- ******************* -->
+		<!-- DIVIDER -->
+		<!-- ******************* -->
+		<nz-divider [nzText]="common.translate('Income Analytics')"></nz-divider>
+		<!-- ******************* -->
+		<!-- ROW -->
+		<!-- ******************* -->
+		<div nz-row nzGutter="15">
+			<!-- ******************* -->
+			<!-- DATE PICKER -->
+			<!-- ******************* -->
+			<div class="mb-15" nz-col nzSm="24" nzMd="24">
+				<nz-space>
+					<nz-select
+						*nzSpaceItem
+						[(ngModel)]="pickerMode"
+						(ngModelChange)="dateOnChange($event, 'sales')"
+					>
+						<nz-option nzValue="date" [nzLabel]="common.translate('Date')"></nz-option>
+						<nz-option nzValue="week" [nzLabel]="common.translate('Week')"></nz-option>
+						<nz-option nzValue="month" [nzLabel]="common.translate('Month')"></nz-option>
+						<nz-option nzValue="year" [nzLabel]="common.translate('Year')"></nz-option>
+					</nz-select>
+					<nz-date-picker
+						*nzSpaceItem
+						[(ngModel)]="chartAnalyticsDate"
+						(ngModelChange)="dateOnChange($event, 'sales')"
+						[nzPlaceHolder]="common.translate('Choose a date')"
+						[nzMode]="pickerMode"
+					></nz-date-picker>
+					<!-- GO TO TODAY'S DATE -->
+					<button *nzSpaceItem nz-button nzType="primary" (click)="goToToday('sales')">
+						{{ common.translate("Reset") }}
+					</button>
+				</nz-space>
+			</div>
+			<!-- ******************* -->
+			<!-- MONTHLY SALES CHART  -->
+			<!-- ******************* -->
+			<div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="8">
+				<nz-card [nzBodyStyle]="{ padding: '0px' }" class="box-shadow">
+					<apx-chart
+						[chart]="incomeAnalyticsChart.chart"
+						[labels]="incomeAnalyticsChart.labels"
+						[stroke]="incomeAnalyticsChart.stroke"
+						[fill]="incomeAnalyticsChart.fill"
+						[colors]="incomeAnalyticsChart.colors"
+						[series]="incomeAnalyticsChart?.sales?.series"
+						[title]="incomeAnalyticsChart?.sales?.title"
+						[subtitle]="incomeAnalyticsChart?.sales?.subtitle"
+					></apx-chart>
+				</nz-card>
+			</div>
+			<!-- ******************* -->
+			<!-- MONTHLY EXPENSES CHART  -->
+			<!-- ******************* -->
+			<div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="8">
+				<nz-card [nzBodyStyle]="{ padding: '0px' }" class="box-shadow">
+					<apx-chart
+						[chart]="incomeAnalyticsChart.chart"
+						[labels]="incomeAnalyticsChart.labels"
+						[stroke]="incomeAnalyticsChart.stroke"
+						[fill]="incomeAnalyticsChart.fill"
+						[colors]="incomeAnalyticsChart.colors"
+						[series]="incomeAnalyticsChart?.expenses?.series"
+						[title]="incomeAnalyticsChart?.expenses?.title"
+						[subtitle]="incomeAnalyticsChart?.expenses?.subtitle"
+					></apx-chart>
+				</nz-card>
+			</div>
+			<!-- ******************* -->
+			<!-- MONTHLY PROFITS CHART  -->
+			<!-- ******************* -->
+			<div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="8">
+				<nz-card [nzBodyStyle]="{ padding: '0px' }" class="box-shadow">
+					<apx-chart
+						[chart]="incomeAnalyticsChart.chart"
+						[labels]="incomeAnalyticsChart.labels"
+						[stroke]="incomeAnalyticsChart.stroke"
+						[fill]="incomeAnalyticsChart.fill"
+						[series]="incomeAnalyticsChart?.profits?.series"
+						[title]="incomeAnalyticsChart?.profits?.title"
+						[subtitle]="incomeAnalyticsChart?.profits?.subtitle"
+					></apx-chart>
+				</nz-card>
+			</div>
+		</div>
+		<!-- ******************* -->
+		<!-- DIVIDER -->
+		<!-- ******************* -->
+		<nz-divider [nzText]="common.translate(['Reports'])"></nz-divider>
+		<!-- ******************* -->
+		<!-- ROW -->
+		<!-- ******************* -->
+		<nz-row [nzGutter]="15">
+			<!-- ******************* -->
+			<!-- EVENTS BY EVENT TYPE -->
+			<!-- ******************* -->
+			<div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+				<nz-card class="box-shadow">
+					<h2>
+						<strong>
+							{{ common.translate(["Events", "By", "Event", "Type"]) }}
+						</strong>
+					</h2>
+					<apx-chart
+						[series]="eventsByEventTypeChart.series"
+						[chart]="eventsByEventTypeChart.chart"
+						[xaxis]="eventsByEventTypeChart.xaxis"
+						[stroke]="eventsByEventTypeChart.stroke"
+					></apx-chart>
+				</nz-card>
+			</div>
+			<!-- ******************* -->
+			<!-- SALES BY EVENT TYPE CHART -->
+			<!-- ******************* -->
+			<div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+				<nz-card class="box-shadow">
+					<h2>
+						<strong>
+							{{ common.translate(["Sales", "By", "Event Type"]) }}
+						</strong>
+					</h2>
+					<apx-chart
+						[series]="salesByEventTypeChart.series"
+						[chart]="salesByEventTypeChart.chart"
+						[xaxis]="salesByEventTypeChart.xaxis"
+						[stroke]="salesByEventTypeChart.stroke"
+					></apx-chart>
+				</nz-card>
+			</div>
+		</nz-row>
+		<!-- ******************* -->
+		<!-- ROW -->
+		<!-- ******************* -->
+		<nz-divider [nzText]="common.translate(['Event', 'Insights'])"></nz-divider>
+		<div nz-row nzGutter="15">
+			<!-- ******************* -->
+			<!-- BOOKING INSIGHTS CHART -->
+			<!-- ******************* -->
+			<div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+				<h3 class="text-center">{{ common.translate("Most busy day and time") }}</h3>
+				<p class="text-center">
+					<strong> {{ mostBookedDay | date: "full" }} </strong>
+				</p>
+				<apx-chart
+					[series]="eventInsightsChart.series"
+					[chart]="eventInsightsChart.chart"
+					[xaxis]="eventInsightsChart.xaxis"
+					[yaxis]="eventInsightsChart.yaxis"
+					[dataLabels]="eventInsightsChart.dataLabels"
+					[grid]="eventInsightsChart.grid"
+					[stroke]="eventInsightsChart.stroke"
+					[title]="eventInsightsChart.title"
+				></apx-chart>
+			</div>
+		</div>
+	</div>
+</nz-spin>
